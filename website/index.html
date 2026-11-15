@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en" data-type="software" data-radius="sharp" data-ground="sand" data-buttons="arrow" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sentinel AI: fraud screening for small online stores</title>
+<meta name="description" content="A hackathon prototype that scores every simulated card order, then allows, verifies or declines it by expected cost. Try the live replay in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sentinel AI: fraud screening for small online stores">
+<meta property="og:description" content="Scores every simulated card order, then allows, verifies or declines it by expected cost.">
+<meta property="og:image" content="share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#111111">
+<meta name="site-kind" content="software">
+<meta name="page-type" content="software">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/backgrounds/backgrounds.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<link rel="stylesheet" href="assets/icons/icon.css">
+<style>
+:root {
+  --p-bg: #111111; --p-surface: #1c1c1c; --p-ink: #f2f2f2; --p-muted: #8f8f8f;
+  --p-accent: #a08672; --p-accent-ink: #111111; --p-action: #a08672; --p-action-ink: #111111;
+  --p-inv-bg: #f2f2f2; --p-inv-surface: #e0e0e0; --p-inv-ink: #111111; --p-inv-muted: #5c5c5c;
+  --p-inv-accent: #a08672; --p-inv-accent-ink: #111111; --p-inv-action: #a08672; --p-inv-action-ink: #111111;
+  --font-display: "Familjen Grotesk", system-ui, sans-serif;
+  --font-text: "Familjen Grotesk", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 400;
+  --display-tracking: -0.03em;
+  --display-tracking-xl: -0.04em;
+}
+</style>
+<link rel="stylesheet" href="assets/ui/base.css">
+<link rel="stylesheet" href="assets/ui/terminal-run/fragment.css">
+<link rel="stylesheet" href="assets/diagrams/diagram.css">
+<link rel="stylesheet" href="hero.css">
+<link rel="stylesheet" href="site.css">
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script src="assets/backgrounds/backgrounds.js"></script>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="assets/moments/moments.js">
+<link rel="modulepreload" href="assets/moments/lib.js">
+<link rel="modulepreload" href="assets/moments/word-highlight/moment.js">
+<link rel="modulepreload" href="assets/moments/line-carries-colour/moment.js">
+</head>
+<body>
+<!-- type: software (fraud screening for small online stores; fintech)
+     deal: hero centred, nav nav-centre (dealt nav-cards; no photographs for its cards, so dealt again without it),
+     close close-word, footer footer-statement, rhythm dark-band, buttons arrow, mark arc, ground sand
+     palette lunar-grey-bronze (a near-black risk desk with a muted bronze for money), type familjen, radius sharp
+     effect: painterly-landscape in the hero window
+     moments: word-highlight (#policy statement), line-carries-colour (#whatif on the dark band) -->
+
+<header class="nav nav--centre">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="#top"><span class="mark" data-mark="arc" aria-hidden="true"></span>Sentinel AI</a>
+    <nav class="nav__links" aria-label="Main">
+      <div class="nav__item"><a class="nav__link" href="#replay">Replay</a></div>
+      <div class="nav__item"><a class="nav__link" href="#how">How it decides</a></div>
+      <div class="nav__item"><a class="nav__link" href="#whatif">What-if</a></div>
+      <div class="nav__item"><a class="nav__link" href="#evidence">Evidence</a></div>
+      <div class="nav__item"><a class="nav__link" href="#limits">Limits</a></div>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--primary" href="#replay">Run the live replay<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero hero--centred" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text">
+      <div class="hero__c">
+        <a class="pill" href="#limits"><span>Hackathon prototype</span><span class="muted">Every payment is simulated</span></a>
+        <h1 id="hero-h" aria-label="Fraud screening for small online stores"><span class="ly-mark" aria-hidden="true"></span> Fraud screening for small online stores</h1>
+        <p class="hero__lead">Sentinel scores each card order on 41 behavioural signals, then allows, verifies or declines it at the lowest expected cost. In a replay of 21,596 simulated orders, fraud losses, chargeback fees and lost sales fell from $77,219 to $14,776, an 81% cut.</p>
+        <div class="btn-row"><a class="btn btn--primary" href="#replay">Run the live replay<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="https://github.com/Agent8-8/sentinel-ai">Read the source code</a></div>
+      </div>
+      <div class="hero__stage">
+        <div class="viz" id="hero-viz">
+          <div class="viz__bar"><span class="d-win__dots"><i></i><i></i><i></i></span><b>Sentinel</b><span>Showing every flagged order and 1 in 30 allowed</span><span class="sp"></span><span class="viz__count"><b data-viz-screened>0</b> orders screened</span><span class="viz__live"><i></i>Live</span></div>
+          <canvas class="viz__canvas" role="img" aria-label="Simulated orders flow through 41 behavioural signals and five gradient-boosted tree models into a calibrated risk score, then to the cheapest action: allow, verify or decline. A novelty gate sends unusual orders to verify."></canvas>
+          <button class="viz__pause" type="button" data-viz-pause aria-pressed="false" aria-label="Pause model animation"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2.5v7M8.5 2.5v7"/></svg></button>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section" id="costs" aria-labelledby="costs-h">
+    <div class="wrap">
+      <div class="grid">
+        <h2 class="span-5" id="costs-h">What the $77,219 is made of</h2>
+        <p class="span-6 start-7 lede">The cost counts three things a store pays for: goods lost to fraud, a $25 fee per chargeback, and sales lost when a good buyer is declined or gives up on a code check.</p>
+      </div>
+      <div class="cb">
+        <div class="cb-row">
+          <div class="cb-head"><span>Allow every order</span><b>$77,219</b></div>
+          <div class="cb-bar" role="img" aria-label="Allow every order: $66,594 in goods lost to fraud and $10,625 in chargeback fees, $77,219 in total">
+            <i class="cb-fraud" style="--w:86.24%"></i><i class="cb-fee" style="--w:13.76%"></i>
+          </div>
+          <ul class="cb-legend">
+            <li><i class="cb-fraud"></i>Goods lost to fraud<b>$66,594</b><span>425 fraud orders shipped</span></li>
+            <li><i class="cb-fee"></i>Chargeback fees<b>$10,625</b><span>425 × $25</span></li>
+          </ul>
+        </div>
+        <div class="cb-row cb-row--sen">
+          <div class="cb-head"><span>With Sentinel</span><b>$14,776</b><em>$62,444 saved</em></div>
+          <div class="cb-bar" role="img" aria-label="With Sentinel: $12,127 in fraud that got through, $1,475 in chargeback fees, $101 for verification codes and $1,073 in lost sales, $14,776 in total">
+            <i class="cb-fraud" style="--w:15.70%"></i><i class="cb-fee" style="--w:1.91%"></i><i class="cb-code" style="--w:0.40%"></i><i class="cb-lost" style="--w:1.39%"></i><i class="cb-saved" style="--w:80.86%"></i>
+          </div>
+          <ul class="cb-legend">
+            <li><i class="cb-fraud"></i>Fraud that got through<b>$12,127</b><span>59 of 425 fraud orders</span></li>
+            <li><i class="cb-fee"></i>Chargeback fees<b>$1,475</b><span>59 × $25</span></li>
+            <li><i class="cb-code"></i>Verification codes<b>$101</b><span>253 orders × $0.40</span></li>
+            <li><i class="cb-lost"></i>Lost sales from good buyers<b>$1,073</b><span>declined or gave up on a code</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="cb-note">Seed-7 replay from the repository's corrected replay report. Assumes a 30% margin, $25 chargeback fee, $20 cost of turning away a good buyer and $0.40 per code. Simulated, not measured savings.</p>
+    </div>
+  </section>
+
+  <section class="section sim-stage" id="replay" aria-labelledby="replay-h">
+    <div class="wrap">
+      <div class="sim-head">
+        <p class="sim-eyebrow"><span class="sim-live" aria-hidden="true"></span>Live simulator</p>
+        <h2 id="replay-h">Every order, scored and decided live</h2>
+        <p class="lede">Press Run and simulated orders stream through the policy. Pick any row to see its risk, its top reasons and what each action would have cost.</p>
+      </div>
+      <div class="ui app fill" id="console" aria-label="Live decision console">
+        <div class="app__pane app__pane--list">
+          <div class="rp-bar">
+            <button class="btn btn--primary btn--sm rp-play" type="button" data-rp="play" aria-pressed="false">Run replay</button>
+            <button class="btn btn--secondary btn--sm" type="button" data-rp="step">Add 100 orders</button>
+            <button class="btn btn--secondary btn--sm" type="button" data-rp="reset">Reset replay</button>
+          </div>
+          <dl class="rp-kpis" aria-live="polite">
+            <div><dt>Orders</dt><dd data-k="n">0</dd></div>
+            <div><dt>Fraud $ stopped</dt><dd data-k="stop">0%</dd></div>
+            <div><dt>Saved vs allow-all</dt><dd data-k="save">$0</dd></div>
+            <div><dt>Good orders declined</dt><dd data-k="fd">0%</dd></div>
+          </dl>
+          <div class="rp-cols" aria-hidden="true"><span>Order</span><span>Amount</span><span>Risk</span><span>Action</span></div>
+          <ul class="rp-feed" data-feed></ul>
+        </div>
+        <div class="app__pane app__pane--open" data-case>
+          <div class="rp-case">
+            <p class="t-label muted">Merchant briefing</p>
+            <p class="rp-brief" data-brief>Press Run replay. Sentinel will screen orders from simulated day 74 onwards and write a short summary here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="how-h">How Sentinel decides in 3 steps. <span class="muted">About 14 ms an order.</span></h2>
+      </div>
+      <div class="grid">
+        <article class="card card--row span-4">
+          <span class="step-num">1</span>
+          <h3>Reads the order's history</h3>
+          <p>Velocity, linked cards and devices, and chargebacks that have already arrived.</p>
+          <div class="panel panel--flush">
+            <div class="dg" data-diagram='{"layout":"lanes","alt":"One order is checked against device, card and address history in parallel.","input":{"label":"Order","icon":"ui:shopping-cart","sub":"$412.00"},"core":{"label":"Feature engine","icon":"ui:cpu"},"lanes":[{"label":"Device","icon":"ui:smartphone","done":true,"sub":"3 cards today"},{"label":"Card","icon":"ui:credit-card","done":true,"sub":"2 orders in 1h"},{"label":"Address","icon":"ui:map-pin","done":true,"sub":"No chargebacks"}]}'></div>
+          </div>
+        </article>
+        <article class="card card--row span-4">
+          <span class="step-num">2</span>
+          <h3>Prices all three actions</h3>
+          <p>Fraud loss if allowed, lost margin if declined, friction if verified. The cheapest wins.</p>
+          <div class="panel panel--flush">
+            <div class="mini-cost" role="img" aria-label="For a $412 order at 34% risk: allow costs $148.60, verify $2.71, decline $180.06">
+              <p class="mini-cost__head"><b>$412.00</b><span>risk 34%</span></p>
+              <div class="mini-cost__row"><span>Allow</span><i style="--w:83%"></i><b>$148.60</b></div>
+              <div class="mini-cost__row is-pick"><span>Verify</span><i style="--w:2%"></i><b>$2.71</b></div>
+              <div class="mini-cost__row"><span>Decline</span><i style="--w:100%"></i><b>$180.06</b></div>
+            </div>
+          </div>
+        </article>
+        <article class="card card--row span-4">
+          <span class="step-num">3</span>
+          <h3>Remembers what verification proved</h3>
+          <p>A failed code marks the device bad at once. A passed one stops repeat challenges.</p>
+          <div class="panel panel--flush">
+            <ul class="mini-log" aria-label="Trust memory updates after verification">
+              <li><i class="is-bad"></i><span><b>Device a91f marked bad</b>Code failed on order 58213</span><time>14:08</time></li>
+              <li><i class="is-good"></i><span><b>Account 2207 trusted</b>Passed on this phone</span><time>14:02</time></li>
+              <li><i class="is-bad"></i><span><b>Address flagged</b>Linked to a chargeback</span><time>13:51</time></li>
+              <li><i class="is-good"></i><span><b>Account 1840 trusted</b>Passed on this laptop</span><time>13:40</time></li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section statement" id="policy" data-moment="word-highlight" aria-label="The policy">
+    <div class="wrap">
+      <p class="t-label">The policy</p>
+      <p class="mo-wh__text">A $9 order and a $900 order with the same risk get different treatment. Sentinel declines only when turning a buyer away costs less than the fraud it stops, and asks for a code <strong>when a few seconds</strong> of friction is the cheapest answer.</p>
+    </div>
+  </section>
+
+  <section class="section ground-inverse" id="whatif" data-moment="line-carries-colour" data-moment-opts='{"from": "base"}' aria-labelledby="whatif-h">
+    <div class="wrap">
+      <div class="grid">
+        <div class="span-5 stack-4">
+          <h2 id="whatif-h">Your store's costs, your thresholds</h2>
+          <p class="lede">Move a slider and the policy re-optimises across 20,000 simulated orders.</p>
+          <form class="wi-sliders" data-whatif aria-label="Business assumptions">
+            <div class="wi-s"><label for="s-margin">Gross margin <output data-o="margin">30%</output></label><input id="s-margin" name="margin" type="range" min="0.05" max="0.8" step="0.01" value="0.30"></div>
+            <div class="wi-s"><label for="s-fee">Chargeback fee <output data-o="chargeback_fee">$25</output></label><input id="s-fee" name="chargeback_fee" type="range" min="0" max="100" step="1" value="25"></div>
+            <div class="wi-s"><label for="s-churn">Cost of turning away a good buyer <output data-o="churn_cost">$20</output></label><input id="s-churn" name="churn_cost" type="range" min="0" max="100" step="1" value="20"></div>
+            <div class="wi-s"><label for="s-friction">Cost per verification <output data-o="friction">$0.40</output></label><input id="s-friction" name="friction" type="range" min="0" max="5" step="0.1" value="0.4"></div>
+            <div class="wi-s"><label for="s-catch">Fraudsters stopped by a code <output data-o="catch_rate">85%</output></label><input id="s-catch" name="catch_rate" type="range" min="0.3" max="1" step="0.01" value="0.85"></div>
+            <div class="wi-s"><label for="s-abandon">Good buyers who abandon a code <output data-o="abandon">7%</output></label><input id="s-abandon" name="abandon" type="range" min="0" max="0.4" step="0.01" value="0.07"></div>
+          </form>
+        </div>
+        <div class="span-6 start-7 wi-out" aria-live="polite">
+          <p class="t-label muted">Outcome over 20,000 orders</p>
+          <p class="wi-big" data-w="save">$0</p>
+          <p class="muted">saved against allowing every order</p>
+          <div class="wi-split" role="img" data-w="splitlabel" aria-label="Share of orders allowed, verified and declined">
+            <i class="a" data-w="a"></i><i class="v" data-w="v"></i><i class="d" data-w="d"></i>
+          </div>
+          <ul class="wi-legend">
+            <li><i class="a"></i>Allowed <b data-w="ap">0%</b></li>
+            <li><i class="v"></i>Verified <b data-w="vp">0%</b></li>
+            <li><i class="d"></i>Declined <b data-w="dp">0%</b></li>
+          </ul>
+          <dl class="wi-stats">
+            <div><dt>Fraud $ stopped</dt><dd data-w="stop">0%</dd></div>
+            <div><dt>Good buyers declined</dt><dd data-w="fd">0%</dd></div>
+            <div><dt>Good buyers asked for a code</dt><dd data-w="fr">0%</dd></div>
+          </dl>
+          <div class="wi-sample">
+            <p class="t-label muted">A $412 order at 34% risk</p>
+            <div class="mini-cost mini-cost--flat" data-sample aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section g2" id="evidence" aria-labelledby="evidence-h">
+    <div class="wrap">
+      <div class="group">
+        <div class="grid">
+          <h2 class="span-5" id="evidence-h">Model evidence on held-out days 74 to 91</h2>
+          <p class="span-6 start-7 lede">Averaged over 3 simulated stores. Recall is measured with 0.5% of genuine orders flagged, a cutoff set afterwards from test labels.</p>
+        </div>
+        <div class="ev-table ui ui-table" role="region" aria-label="Detection results" tabindex="0">
+          <table>
+            <thead><tr><th scope="col">Model</th><th scope="col">AUPRC</th><th scope="col">Fraud caught</th><th scope="col">Fraud $ caught</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Rules engine, typical gateway rules</th><td>0.38</td><td><span class="bar" style="--v:41%"></span>41%</td><td>25%</td></tr>
+              <tr><th scope="row">Logistic regression, order fields</th><td>0.60</td><td><span class="bar" style="--v:54%"></span>54%</td><td>31%</td></tr>
+              <tr><th scope="row">Gradient boosting, order fields</th><td>0.59</td><td><span class="bar" style="--v:59%"></span>59%</td><td>39%</td></tr>
+              <tr class="is-best"><th scope="row">Sentinel, behavioural model bag</th><td>0.89</td><td><span class="bar" style="--v:91%"></span>91%</td><td>91%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="group">
+        <div class="grid">
+        <div class="span-6 ev-col">
+        <h3 class="ev-h">Fraud caught by pattern. <span class="muted">The sleeper ring never appears in training.</span></h3>
+        <div class="ev-patterns" role="img" aria-label="Recall by fraud pattern: card testing rules 76%, Sentinel 100%; account takeover rules 41%, Sentinel 93%; stolen card rules 33%, Sentinel 96%; sleeper ring rules 0%, Sentinel 93%; friendly fraud 0% for both">
+          <div class="ev-p"><span>Card testing</span><div><i class="r" style="--v:76%"></i><i class="s" style="--v:100%"></i></div><b>100%</b></div>
+          <div class="ev-p"><span>Account takeover</span><div><i class="r" style="--v:41%"></i><i class="s" style="--v:93%"></i></div><b>93%</b></div>
+          <div class="ev-p"><span>Stolen card</span><div><i class="r" style="--v:33%"></i><i class="s" style="--v:96%"></i></div><b>96%</b></div>
+          <div class="ev-p"><span>Sleeper ring</span><div><i class="r" style="--v:0%"></i><i class="s" style="--v:93%"></i></div><b>93%</b></div>
+          <div class="ev-p"><span>Friendly fraud</span><div><i class="r" style="--v:0%"></i><i class="s" style="--v:0%"></i></div><b>0%</b></div>
+          <ul class="ev-key"><li><i class="r"></i>Rules engine</li><li><i class="s"></i>Sentinel</li></ul>
+        </div>
+        </div>
+        <div class="span-6 ev-col">
+        <h3 class="ev-h">Cost of each decision policy. <span class="muted">Test window, mean per store.</span></h3>
+        <ul class="ev-costs" role="img" aria-label="Simulated total cost by decision policy: allow every order $82,037; rules auto-decline $73,399; rules manual review $67,959; Sentinel one threshold $21,986; Sentinel expected-cost policy $15,007">
+          <li><span>Allow every order</span><i style="--v:100%"></i><b>$82,037</b></li>
+          <li><span>Rules engine, auto-decline</span><i style="--v:89.5%"></i><b>$73,399</b></li>
+          <li><span>Rules engine, manual review</span><i style="--v:82.8%"></i><b>$67,959</b></li>
+          <li><span>Sentinel score, one threshold</span><i style="--v:26.8%"></i><b>$21,986</b></li>
+          <li class="is-best"><span>Sentinel expected-cost policy</span><i style="--v:18.3%"></i><b>$15,007</b></li>
+        </ul>
+        </div>
+        </div>
+        <dl class="ev-facts">
+          <div><dt>Brier score on test</dt><dd>0.0052</dd></div>
+          <div><dt>Calibration error</dt><dd>0.004</dd></div>
+          <div><dt>Predicted vs actual fraud rate</dt><dd>1.7% / 2.1%</dd></div>
+          <div><dt>Real ULB data, AUPRC</dt><dd>0.79</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="limits" aria-labelledby="limits-h">
+    <div class="wrap">
+      <div class="grid">
+        <div class="span-5 stack-4">
+          <h2 id="limits-h">Questions and known limits</h2>
+          <p class="lede">One script installs the project, runs its leakage and policy tests, then starts the dashboard.</p>
+          <a class="link" href="https://github.com/Agent8-8/sentinel-ai#honest-limitations">Read the full limitations</a>
+          <div class="term-slot" role="img" aria-label="Terminal running run.sh: seven leakage and policy tests pass, then the dashboard starts on port 8000">
+            <div class="ui ui-panel ui-term" data-ui="terminal-run">
+              <div class="ui-term__head">
+                <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="ui-term__title">sentinel-ai</span>
+                <span class="ui-meta">zsh</span>
+                <span class="ui-spacer"></span>
+                <span class="ui-chip ui-chip--plain ui-term__branch">main</span>
+              </div>
+              <div class="ui-term__screen" data-term-screen>
+                <div class="ui-term__track" data-term-track>
+                  <div class="ui-term__ln ui-term__cmd"><span class="ui-term__cwd">~/sentinel-ai</span><span class="ui-term__sig">$</span><span class="ui-term__typed" data-term-cmd>./run.sh</span></div>
+                  <div class="ui-term__ln ui-term__meter" data-term-out data-term-meter><span class="ui-term__bar" style="--p:1"><i></i></span><span class="ui-term__count" data-term-count>7 of 7 tests</span></div>
+                  <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">test_no_lookahead</span><span class="ui-term__n">passed</span></div>
+                  <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">test_splits_and_label_cens</span><span class="ui-term__n">passed</span></div>
+                  <div class="ui-term__ln ui-term__log" data-term-out data-term-step><svg class="ui-term__tick" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg><span class="ui-term__path">test_policy_sane</span><span class="ui-term__n">passed</span></div>
+                  <div class="ui-term__ln ui-term__gap" data-term-out aria-hidden="true"></div>
+                  <div class="ui-term__ln ui-term__sum" data-term-out><span class="ui-term__key">Tests</span><span class="ui-term__val">7 passed</span><span class="ui-term__dim">(7)</span></div>
+                  <div class="ui-term__ln ui-term__done" data-term-out data-term-done><span class="ui-term__ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.3 2.4 2.4 4.6-5"/></svg></span><b>Dashboard</b><span class="ui-term__dim">localhost:8000</span></div>
+                  <div class="ui-term__ln ui-term__cmd" data-term-next><span class="ui-term__cwd">~/sentinel-ai</span><span class="ui-term__sig">$</span><span class="ui-term__typed"></span><i class="ui-term__caret" aria-hidden="true"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="faq span-6 start-7">
+          <div class="faq__item"><h3>Does Sentinel touch real money?</h3><p>No. Orders, payments, verification and chargebacks are all simulated.</p></div>
+          <div class="faq__item"><h3>How does Sentinel score real card data?</h3><p>On 284,807 real ULB transactions the scoring model reached AUPRC 0.79 against 0.75 for logistic regression, with overlapping intervals.</p></div>
+          <div class="faq__item"><h3>Why is friendly fraud at 0%?</h3><p>It is built to look exactly like a genuine order, so no signal can catch it. It caps recall at about 95%.</p></div>
+          <div class="faq__item"><h3>Can a merchant set Sentinel’s cost figures?</h3><p>Yes. The what-if panel re-optimises for any margin, chargeback fee or verification cost.</p></div>
+          <div class="faq__item"><h3>When does a person review an order?</h3><p>Only when an order passes verification yet risk stays at 90% or more. That happened 0 times in test.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing footer--statement" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--word">
+      <div class="section-head--split">
+        <div><h2 id="close-h">Watch Sentinel screen a store's orders</h2><p class="t-lead">Runs in your browser. No sign-up, no card.</p></div>
+        <a class="btn btn--primary" href="#replay">Run the live replay<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      </div>
+      <p class="close__word" aria-hidden="true">Sentinel AI</p>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top"><span class="mark" data-mark="arc" aria-hidden="true"></span>Sentinel AI</a>
+          <p class="footer__lede">Fraud screening for small online stores, built for a hackathon.</p>
+        </div>
+        <div class="span-2 start-7 footer__col"><h3>Product</h3><ul><li><a href="#replay">Replay</a></li><li><a href="#how">How it decides</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Results</h3><ul><li><a href="#whatif">What-if</a></li><li><a href="#evidence">Evidence</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Project</h3><ul><li><a href="https://github.com/Agent8-8/sentinel-ai">Source code</a></li><li><a href="#limits">Limits</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Sentinel AI. A prototype, not financial advice.</span>
+        <div class="socials"></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
+<script type="module" src="assets/diagrams/mount.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
