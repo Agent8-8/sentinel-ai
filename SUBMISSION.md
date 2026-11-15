@@ -7,9 +7,9 @@ This project is a prototype and is not financial advice. Payments and verificati
 
 A small online store can lose money to fraudulent orders, but rejecting legitimate customers can lose sales too. Sentinel explores how a store might balance these costs when reviewing card transactions.
 
-## What we built and added
+## What we built
 
-The Finance brief suggests card fraud detection. Sentinel adds a simulated small-store setting: it uses prior order behavior to estimate fraud risk, then compares assumed costs of allowing, verifying, or declining an order. The dashboard replays orders and explains signals behind a decision. An anomaly detector can send unusual orders for verification. It does not connect to a payment service.
+Sentinel is built for a small online store, not a bank. It uses a simulated store's order history to estimate fraud risk, then compares assumed costs of allowing, verifying, or declining an order. The dashboard replays orders and explains signals behind a decision. An anomaly detector can send unusual orders for verification. It does not connect to a payment service.
 
 ## How it works
 

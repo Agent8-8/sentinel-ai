@@ -15,11 +15,11 @@ The owner of a small online store. They lose money when a fraudulent order goes 
 
 A gradient-boosted model (5 copies averaged, then calibrated) scores the risk from 41 features built only from earlier orders. A cost rule then picks the cheapest action, so a $9 order and a $900 order with the same risk can get different actions. An anomaly detector can send unusual orders to verification. The explanation shown for each order comes from the model itself (which signals pushed the risk up), not from a chatbot.
 
-## What we added to the suggested card fraud project
+## What makes it different
 
-- **Our own user:** a small online store owner with no fraud team, instead of a bank.
-- **Our own data:** a store simulator (`sentinel/simulator.py`) with customers, devices, five kinds of fraud, and chargebacks that show up days late, the way they do in real life.
-- **Our own question:** not just "is this fraud?" but "what should the store do?" A cost rule picks allow, verify, or decline for each order.
+- **Built for a store, not a bank:** the user is a small online store owner with no fraud team.
+- **Its own data:** a store simulator (`sentinel/simulator.py`) with customers, devices, five kinds of fraud, and chargebacks that show up days late, the way they do in real life.
+- **It decides, not just detects:** instead of only asking "is this fraud?", it asks "what should the store do?" A cost rule picks allow, verify, or decline for each order.
 - **A real-data check:** the scoring model is also tested on the public ULB/Worldline card dataset.
 
 ## How the AI is built (where to find the code)
