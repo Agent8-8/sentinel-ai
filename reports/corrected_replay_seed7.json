@@ -1,0 +1,25 @@
+{
+  "scope": "seed-7 simulated test replay; schedules chargeback only if simulated loss occurred",
+  "model_calibration": "uses complete simulated validation labels; not realistic delayed-label calibration",
+  "policy": {
+    "transactions": 21596,
+    "volume_usd": 2496692.37,
+    "allowed": 21088,
+    "held": 253,
+    "declined": 255,
+    "auto_resolved_pct": 100.0,
+    "merchant_escalations": 0,
+    "fraud_caught": 366,
+    "fraud_total": 425,
+    "fraud_usd_stopped": 54467.26,
+    "fraud_usd_total": 66594.07,
+    "false_decline_rate_pct": 0.024,
+    "legit_friction_pct": 0.553,
+    "trusted_skips": 37,
+    "novelty_holds": 142,
+    "net_savings_usd": 62443.54,
+    "cost_usd": 14775.53,
+    "cost_approve_all_usd": 77219.07
+  },
+  "n_test": 21596
+}

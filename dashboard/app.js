@@ -103,10 +103,10 @@ async function loadReports() {
   const detAll = R.results.mean.detection, gateKey = Object.keys(detAll).find((k) => k.includes("novelty gate"));
   const gate = detAll[gateKey];
   const det = Object.fromEntries(Object.entries(detAll).filter(([k]) => k !== gateKey)), names = Object.keys(det);
-  $("#det").innerHTML = `<tr><th>model</th><th>AUPRC</th><th>95% CI*</th><th>recall @0.5% FPR</th><th>$ recall @0.5% FPR</th><th>AUROC</th></tr>` +
+  $("#det").innerHTML = `<tr><th>model</th><th>AUPRC</th><th>mean interval endpoints*</th><th>recall @0.5% FPR</th><th>$ recall @0.5% FPR</th><th>AUROC</th></tr>` +
     names.map((n) => { const m = det[n]; return `<tr class="${n.startsWith("Sentinel") ? "best" : ""}"><td>${n}</td><td>${m.auprc.toFixed(3)}</td><td class="muted">${m.auprc_ci95.map((v) => v.toFixed(2)).join("–")}</td><td>${pct(m["recall@0.5%fpr"])}</td><td>${pct(m["dollar_recall@0.5%fpr"])}</td><td>${m.auroc.toFixed(3)}</td></tr>`; }).join("") +
     (gate ? `<tr class="best"><td>Sentinel + novelty gate (flag = verify)</td><td colspan=2 class="muted">${pct(gate.genuine_flagged, 2)} genuine flagged</td><td>${pct(gate.recall)}</td><td>${pct(gate.dollar_recall)}</td><td></td></tr>` : "") +
-    `<tr><td colspan=6 class="foot">*bootstrap CI averaged across worlds. Calibration on test: Brier ${R.results.mean.calibration.brier.toFixed(4)}, ECE ${R.results.mean.calibration.ece.toFixed(4)}</td></tr>`;
+    `<tr><td colspan=6 class="foot">*per-world bootstrap interval endpoints averaged; not a confidence interval for the mean. Calibration on test: Brier ${R.results.mean.calibration.brier.toFixed(4)}, ECE ${R.results.mean.calibration.ece.toFixed(4)}</td></tr>`;
   const types = Object.keys(det[names[0]]["recall_by_type@0.5%fpr"]);
   new Chart($("#types"), { type: "bar", data: { labels: types.map((t) => t === "sleeper_ring" ? "sleeper ring (unseen)" : t),
     datasets: names.map((n, i) => ({ label: n, data: types.map((t) => det[n]["recall_by_type@0.5%fpr"][t]), backgroundColor: ["#3a4660", "#56657f", "#7d8aa3", C.accent][i] }))

@@ -1,11 +1,10 @@
 # Sentinel AI: autonomous fraud prevention for small online stores
 
-Sentinel scores every card-not-present order in real time and **decides on its own** whether to
-**allow** it, **hold it for automated customer verification** (3DS/OTP-style step-up), or **decline** it.
-The goal is to stop fraud without turning away good customers and without a merchant reviewing orders by hand.
+Sentinel simulates screening card-not-present orders for a small online store. A model scores each simulated order, and a cost-based policy chooses to allow, verify, or decline it. All payments and verification outcomes are simulated.
 
 > Hackathon prototype. All payments are simulated. Detection is trained and tested on a behavioural
-> simulator (below) and the core ML is independently checked on a real public dataset.
+> simulator (below). A separate public-data benchmark tests the scoring model, not the behavioural system.
+> This project is a prototype and is not financial advice.
 
 ```bash
 ./run.sh                      # installs deps, runs tests, (re)builds reports if missing, starts the dashboard
@@ -14,15 +13,17 @@ The goal is to stop fraud without turning away good customers and without a merc
 
 ---
 
+## Corrected replay (one simulated store)
+
+The action-aware replay processed 21,596 simulated test orders. It scheduled chargebacks only when fraud actually caused a simulated loss. Its simulated policy cost was $14,775.53, compared with $77,219.07 when all orders were approved. These are modeled outcomes for one store under assumed costs, not real savings. The run still uses complete simulator truth for validation calibration. See [corrected replay output](reports/corrected_replay_seed7.json). This one-store replay is not directly comparable with the older three-store averages below.
+
 ## Headline results (held-out test window, mean of 3 independent simulated stores)
 
-Test = simulated days 74–91. Nothing in this window was used for training, tuning, calibration or threshold
-selection. It contains a holiday sales spike (legit distribution shift) and a fraud pattern that never occurs
-in training ("sleeper ring").
+The original evaluation used simulated days 74–91, including a holiday spike and a new combination of known fraud signals. These test periods have since been inspected and are no longer untouched. The 0.5% false-positive-rate ranking cutoffs below were calculated retrospectively using genuine test labels, so they are not deployable thresholds. Calibration used complete simulated validation labels that a real merchant would not have. Original policy results also assume that chargebacks arrive even for blocked transactions; the corrected live replay may differ. See [reproduction notes](reports/REPRODUCIBILITY.md).
 
 **Detection** (training used only chargebacks that had *arrived* by the label cutoff):
 
-| Model | AUPRC | 95% CI† | Fraud caught @ 0.5% of genuine orders flagged | Fraud $ caught |
+| Model | AUPRC | Mean bootstrap interval endpoints† | Fraud caught @ 0.5% of genuine orders flagged | Fraud $ caught |
 |---|---|---|---|---|
 | Rules engine (typical gateway rules) | 0.38 | 0.41–0.51* | 41% | 25% |
 | Logistic regression, transaction fields | 0.60 | 0.56–0.65 | 54% | 31% |
@@ -46,13 +47,13 @@ false declines, customer churn, verification friction and abandonment):
 | **Sentinel expected-cost policy** | **$15,007** | **82%** | **0.03%** | 0.20% | 0 |
 | **Sentinel full** (+ novelty gate + trust memory) | **$15,097** | **83%** | **0.03%** | 0.84% | 0 |
 
-→ **−82% fraud-related cost vs. doing nothing, 1 in 3,000 genuine customers declined, zero manual reviews.**
+Under these simulation assumptions, the reported full-policy cost was 82% lower than approving all orders. This is not a measured real-world saving, and the counterfactual-feedback limitation above can affect the estimate.
 
-**Real public data** (ULB/Worldline credit-card dataset, 284,807 real transactions, strict temporal split):
+**Real public data, rerun and reproduced** (ULB/Worldline credit-card dataset, 284,807 real transactions, strict temporal split):
 Sentinel GBM bag test AUPRC **0.79** [0.71–0.86] vs logistic regression 0.75 [0.67–0.85]. A modest gain with
-overlapping CIs. That dataset has no identities, so it only validates the modelling stack, not behaviour.
+overlapping CIs. That dataset has no identities, so it evaluates the scoring model on different data, not behavioural features, decision policy, or calibration.
 
-† percentile bootstrap, averaged over worlds. *Rule scores are heavily tied, which biases bootstrap AP upward,
+† Endpoints of per-world percentile bootstrap intervals averaged over worlds; these are not a confidence interval for the three-world mean. *Rule scores are heavily tied, which biases bootstrap AP upward,
 so its CI does not contain the point estimate. It doesn't change any comparison.
 
 ---
@@ -90,8 +91,7 @@ deviation-from-own-history, cross-entity linkage (device→cards/accounts, addre
 ### 3. Learning from delayed, incomplete labels (`sentinel/models.py`)
 At training time only 47% of training-window fraud had been charged back. Recent "no chargeback yet" orders are
 weak evidence of being genuine, so each one is weighted by P(its chargeback would have arrived by now | fraud),
-using a delay distribution fitted from older chargebacks. That makes it safe to also train on the last week
-before the cutoff.
+using a delay distribution fitted from older chargebacks. This is a heuristic for using recent orders; it does not correct for fraud that is never reported and requires independent testing.
 
 ### 4. Novelty gate for attacks with no labels yet (`sentinel/pipeline.py`)
 An IsolationForest fitted only on presumed-genuine traffic. If an order is more anomalous than 99.5% of genuine
@@ -138,17 +138,17 @@ All selection used the validation window (days 63–74), averaged over 3 worlds.
 * **No look-ahead:** rewriting all future transactions leaves every past feature bit-identical (tested).
 * **Reputation** features only see chargebacks whose arrival time precedes the order (tested).
 * **Temporal splits:** train < day 56 | gap | valid 63–74 | test ≥ 74; training labels censored at day 63 (tested).
-* Novel pattern exists only in test (tested). Test window scored once, after the config was frozen
-  (`evaluate.py` reads choices from `reports/experiments.json`).
+* Novel pattern exists only in test (tested). The original configuration was frozen before the original test evaluation; those test periods have since been inspected and are no longer untouched (`evaluate.py` reads the original choices from `reports/experiments.json`).
 * Policy sanity: action severity monotone in risk; expected cost equals realised cost on average (tested).
 
 ## Honest limitations
-* **Synthetic data.** The fraud patterns are my model of reality. Absolute numbers will not transfer; the
-  *relative* evidence (behaviour > transaction-only, gate catches unseen attacks, cost policy > thresholds) is
-  the claim. The real-data check covers only the modelling stack and shows a modest, CI-overlapping gain.
+* **Synthetic data.** Both the absolute results and the relative model and policy comparisons depend on the simulator and need independent testing. The real-data check covers only the scoring model and shows a modest, CI-overlapping gain.
 * **The "unseen" sleeper ring shares fingerprints** (shared devices, drop addresses) with training-era crews,
   so 93% recall there is generalisation to a new *combination*, not to a fundamentally new signal. The
-  leave-one-pattern-out results (61–80% with the gate) are the more sober estimate for genuine zero-days.
+  leave-one-pattern-out results (61–80% with the gate) are additional synthetic stress tests, not estimates of real zero-day detection.
+* **Counterfactual feedback:** the live replay now schedules a chargeback only when a simulated fraud loss occurred. The original precomputed test features and what-if analysis still assume simulated chargebacks arrive regardless of policy decisions. Real blocked orders would not produce those same chargebacks. The historical policy results do not account for this feedback loop, and the corrected live replay can differ from them.
+* **Calibration uses simulator ground truth.** Validation fraud labels are fully known in the simulation, even when chargebacks would be delayed or never reported. Real merchants would not have that oracle; probabilities and cost decisions need testing with labels available at the time.
+* **Threshold selection:** the 0.5% false-positive-rate comparisons use genuine test labels to set their threshold retrospectively. They describe ranking at a chosen operating point, not an actionable preselected cutoff.
 * **The novelty gate didn't pay for itself on this test set** (+$90 cost, +0.6% genuine verified) because the
   supervised model already covered every test pattern. It's insurance against attacks with no labels yet.
 * **Friendly fraud (~5% of fraud) is undetectable** here by construction and caps recall.
@@ -176,6 +176,16 @@ dashboard/                live ops, model evidence, what-if (Chart.js)
 tests/                    leakage, causality and policy tests
 ```
 
+The local [submission write-up](SUBMISSION.md) describes a validation-selected cutoff and the [scenario audit](reports/scenario_audit.json) reports false flags for simulated guest, new-device, and cross-country-IP situations. These are behavioral scenarios, not protected demographics.
+
 Reproduce from scratch: `python -m sentinel.experiments && python -m sentinel.experiments_novelty &&
 python -m sentinel.evaluate && python -m sentinel.benchmark_public` (~20 min on a laptop; the ULB step needs
-`data/public/creditcard.pq` from OpenML dataset 1597).
+the original [Kaggle creditcard.csv](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud), including `Time`, placed in `data/public/`. The OpenML 1597 copy tested here omits `Time`, so it cannot reproduce this temporal benchmark).
+
+## Follow-up training experiments
+
+A validation-selected guest-weighting experiment reduced score-based false flags for genuine guest orders on three new simulated stores, with small differences in overall ranking and recall. It remains experimental; the default model is unchanged. See [experiment details](reports/EXPERIMENTS_2026-11-14.md), including limitations and a separate exploratory policy comparison.
+
+## Submission materials and older report
+
+[SUBMISSION.md](SUBMISSION.md) is the current write-up; [JUDGE_PREP.md](JUDGE_PREP.md) explains the results and limitations. `reports/Sentinel-AI-Findings.pdf` and `reports/findings.html` predate the action-aware replay correction and evaluation caveats. Treat them as historical, not as the current submission write-up.

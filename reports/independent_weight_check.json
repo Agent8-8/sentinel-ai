@@ -1,0 +1,121 @@
+{
+  "seeds": [
+    31,
+    43,
+    59
+  ],
+  "per_world": {
+    "31": {
+      "original": {
+        "ap": 0.8597428844637937,
+        "brier": 0.007188002047658599,
+        "threshold": 0.010101010101010102,
+        "tp": 307,
+        "fp": 41,
+        "fn": 82,
+        "precision": 0.882183908045977,
+        "recall": 0.7892030848329049,
+        "genuine_fpr": 0.001924973003427391,
+        "guest_genuine_n": 224,
+        "guest_fp": 7,
+        "nonguest_genuine_n": 21075,
+        "nonguest_fp": 34
+      },
+      "stronger_maturity": {
+        "ap": 0.8552404306240341,
+        "brier": 0.007455431459019994,
+        "threshold": 0.009900990099009901,
+        "tp": 331,
+        "fp": 62,
+        "fn": 58,
+        "precision": 0.8422391857506362,
+        "recall": 0.8508997429305912,
+        "genuine_fpr": 0.0029109347856706887,
+        "guest_genuine_n": 224,
+        "guest_fp": 8,
+        "nonguest_genuine_n": 21075,
+        "nonguest_fp": 54
+      }
+    },
+    "43": {
+      "original": {
+        "ap": 0.8858242269063097,
+        "brier": 0.007961352632378257,
+        "threshold": 0.024096385542168676,
+        "tp": 422,
+        "fp": 50,
+        "fn": 110,
+        "precision": 0.8940677966101694,
+        "recall": 0.793233082706767,
+        "genuine_fpr": 0.0023710166919575114,
+        "guest_genuine_n": 204,
+        "guest_fp": 7,
+        "nonguest_genuine_n": 20884,
+        "nonguest_fp": 43
+      },
+      "stronger_maturity": {
+        "ap": 0.9036359692007759,
+        "brier": 0.007811044926322275,
+        "threshold": 0.05128205128205128,
+        "tp": 406,
+        "fp": 39,
+        "fn": 126,
+        "precision": 0.9123595505617977,
+        "recall": 0.7631578947368421,
+        "genuine_fpr": 0.0018493930197268588,
+        "guest_genuine_n": 204,
+        "guest_fp": 5,
+        "nonguest_genuine_n": 20884,
+        "nonguest_fp": 34
+      }
+    },
+    "59": {
+      "original": {
+        "ap": 0.8784263376163,
+        "brier": 0.00666712323508924,
+        "threshold": 0.038461538461538464,
+        "tp": 365,
+        "fp": 48,
+        "fn": 76,
+        "precision": 0.8837772397094431,
+        "recall": 0.8276643990929705,
+        "genuine_fpr": 0.0022846263683960017,
+        "guest_genuine_n": 213,
+        "guest_fp": 11,
+        "nonguest_genuine_n": 20797,
+        "nonguest_fp": 37
+      },
+      "stronger_maturity": {
+        "ap": 0.8731025796939447,
+        "brier": 0.006832244873106826,
+        "threshold": 0.02857142857142857,
+        "tp": 343,
+        "fp": 45,
+        "fn": 98,
+        "precision": 0.884020618556701,
+        "recall": 0.7777777777777778,
+        "genuine_fpr": 0.002141837220371252,
+        "guest_genuine_n": 213,
+        "guest_fp": 8,
+        "nonguest_genuine_n": 20797,
+        "nonguest_fp": 37
+      }
+    }
+  },
+  "means": {
+    "original": {
+      "ap": 0.8746644829954677,
+      "brier": 0.007272159305042033,
+      "precision": 0.8866763147885299,
+      "recall": 0.8033668555442142,
+      "genuine_fpr": 0.002193538687926968
+    },
+    "stronger_maturity": {
+      "ap": 0.8773263265062515,
+      "brier": 0.007366240419483032,
+      "precision": 0.8795397849563783,
+      "recall": 0.7972784718150704,
+      "genuine_fpr": 0.002300721675256266
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "seed": 7,
+  "threshold": 0.002070393374741201,
+  "threshold_method": "99.5th percentile of genuine validation scores; strict greater than",
+  "scope": "simulated behavioral scenarios, not demographics; analysis on previously inspected test period",
+  "groups": {
+    "guest": {
+      "genuine_n": 217,
+      "genuine_flagged": 4,
+      "genuine_flag_rate": 0.018433179723502304,
+      "fraud_n": 206,
+      "fraud_flagged": 206,
+      "fraud_recall": 1.0
+    },
+    "non_guest": {
+      "genuine_n": 20954,
+      "genuine_flagged": 21,
+      "genuine_flag_rate": 0.0010021952849098023,
+      "fraud_n": 219,
+      "fraud_flagged": 171,
+      "fraud_recall": 0.7808219178082192
+    },
+    "new_device": {
+      "genuine_n": 1126,
+      "genuine_flagged": 6,
+      "genuine_flag_rate": 0.0053285968028419185,
+      "fraud_n": 13,
+      "fraud_flagged": 11,
+      "fraud_recall": 0.8461538461538461
+    },
+    "known_device": {
+      "genuine_n": 20045,
+      "genuine_flagged": 19,
+      "genuine_flag_rate": 0.0009478672985781991,
+      "fraud_n": 412,
+      "fraud_flagged": 366,
+      "fraud_recall": 0.8883495145631068
+    },
+    "ip_country_mismatch": {
+      "genuine_n": 405,
+      "genuine_flagged": 10,
+      "genuine_flag_rate": 0.024691358024691357,
+      "fraud_n": 225,
+      "fraud_flagged": 225,
+      "fraud_recall": 1.0
+    },
+    "ip_country_match": {
+      "genuine_n": 20766,
+      "genuine_flagged": 15,
+      "genuine_flag_rate": 0.000722334585379948,
+      "fraud_n": 200,
+      "fraud_flagged": 152,
+      "fraud_recall": 0.76
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "scope": "Exploratory static-policy comparison after guest-weight experiment.\n\nThe seed 61/67/71 test results were previously inspected. Scores use offline\nfeatures with the original chargeback stream; this is not a corrected sequential\nreplay. Both policies use identical simulator assumptions and random seeds.\n",
+  "per_world": {
+    "61": {
+      "original": {
+        "total_cost": 14135.530999999999,
+        "fraud_dollars": 74988.44,
+        "fraud_dollars_stopped": 63982.350000000006,
+        "fraud_dollar_stop_rate": 0.8532295111086456,
+        "fraud_count_stop_rate": 0.8988326848249028,
+        "false_decline_rate": 0.0007542544666006694,
+        "legit_friction_rate": 0.003912695045490973,
+        "legit_lost_rate": 0.0010370998915759204,
+        "legit_revenue_lost": 4623.47,
+        "allow_rate": 0.9736272840244856,
+        "hold_rate": 0.007180006443595527,
+        "decline_rate": 0.01919270953191881
+      },
+      "guest_unlabelled_3x": {
+        "total_cost": 11417.617999999999,
+        "fraud_dollars": 74988.44,
+        "fraud_dollars_stopped": 66250.98,
+        "fraud_dollar_stop_rate": 0.88348257411409,
+        "fraud_count_stop_rate": 0.9085603112840467,
+        "false_decline_rate": 0.0004714090416254184,
+        "legit_friction_rate": 0.005704049403667562,
+        "legit_lost_rate": 0.0007542544666006694,
+        "legit_revenue_lost": 3963.8599999999997,
+        "allow_rate": 0.9722465135545635,
+        "hold_rate": 0.006443595526303678,
+        "decline_rate": 0.021309890919132875
+      }
+    },
+    "67": {
+      "original": {
+        "total_cost": 18128.051,
+        "fraud_dollars": 76642.29999999999,
+        "fraud_dollars_stopped": 62105.03999999999,
+        "fraud_dollar_stop_rate": 0.8103232810080073,
+        "fraud_count_stop_rate": 0.8564476885644768,
+        "false_decline_rate": 0.0005196523053665911,
+        "legit_friction_rate": 0.007227891156462585,
+        "legit_lost_rate": 0.0008975812547241119,
+        "legit_revenue_lost": 5665.969999999999,
+        "allow_rate": 0.9746512813383382,
+        "hold_rate": 0.01343899161221558,
+        "decline_rate": 0.011909727049446222
+      },
+      "guest_unlabelled_3x": {
+        "total_cost": 17558.588,
+        "fraud_dollars": 76642.29999999999,
+        "fraud_dollars_stopped": 62686.979999999996,
+        "fraud_dollar_stop_rate": 0.8179162159799485,
+        "fraud_count_stop_rate": 0.8588807785888077,
+        "false_decline_rate": 0.000472411186696901,
+        "legit_friction_rate": 0.007511337868480726,
+        "legit_lost_rate": 0.0008030990173847317,
+        "legit_revenue_lost": 5889.5599999999995,
+        "allow_rate": 0.9744195745864035,
+        "hold_rate": 0.01348533296260253,
+        "decline_rate": 0.012095092450994022
+      }
+    },
+    "71": {
+      "original": {
+        "total_cost": 8714.286,
+        "fraud_dollars": 68697.4,
+        "fraud_dollars_stopped": 62312.7,
+        "fraud_dollar_stop_rate": 0.9070605292194465,
+        "fraud_count_stop_rate": 0.9033816425120773,
+        "false_decline_rate": 0.0004768944632552816,
+        "legit_friction_rate": 0.002384472316276408,
+        "legit_lost_rate": 0.0005722733559063379,
+        "legit_revenue_lost": 3558.62,
+        "allow_rate": 0.9791890754337558,
+        "hold_rate": 0.004910442875181218,
+        "decline_rate": 0.015900481691062993
+      },
+      "guest_unlabelled_3x": {
+        "total_cost": 6588.982,
+        "fraud_dollars": 68697.4,
+        "fraud_dollars_stopped": 64672.420000000006,
+        "fraud_dollar_stop_rate": 0.9414100096946902,
+        "fraud_count_stop_rate": 0.9202898550724637,
+        "false_decline_rate": 0.0008107205875339787,
+        "legit_friction_rate": 0.0024798512089274642,
+        "legit_lost_rate": 0.0009537889265105632,
+        "legit_revenue_lost": 4475.34,
+        "allow_rate": 0.9788149464527895,
+        "hold_rate": 0.003086564092971052,
+        "decline_rate": 0.01809848945423935
+      }
+    }
+  },
+  "means": {
+    "original": {
+      "total_cost": 13659.289333333334,
+      "fraud_dollar_stop_rate": 0.8568711071120331,
+      "false_decline_rate": 0.0005836004117408473,
+      "legit_friction_rate": 0.004508352839409989
+    },
+    "guest_unlabelled_3x": {
+      "total_cost": 11855.062666666665,
+      "fraud_dollar_stop_rate": 0.8809362665962429,
+      "false_decline_rate": 0.000584846938618766,
+      "legit_friction_rate": 0.005231746160358584
+    }
+  }
+}

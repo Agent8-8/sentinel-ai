@@ -3,7 +3,7 @@ credit-card fraud dataset (284,807 European card transactions over 2 days,
 492 frauds; features V1-V28 are anonymised PCA components).
 
 It has no card/device/account identifiers, so behavioural features cannot be
-built - this benchmark only tests the modelling + calibration stack.
+built - this benchmark only tests the scoring model only; it does not test calibration.
 
 Strict temporal split (no shuffling): first 60% of time = train,
 next 15% = validation (model selection), last 25% = test (scored once).
@@ -22,10 +22,19 @@ from . import models as M
 from .data import ROOT
 
 PATH = ROOT / "data" / "public" / "creditcard.pq"
+CSV_PATH = ROOT / "data" / "public" / "creditcard.csv"
 
 
 def main():
-    df = pd.read_parquet(PATH).sort_values("Time", kind="stable").reset_index(drop=True)
+    if CSV_PATH.exists():
+        df = pd.read_csv(CSV_PATH)
+    elif PATH.exists():
+        df = pd.read_parquet(PATH)
+    else:
+        raise FileNotFoundError("Place the original Kaggle creditcard.csv (including Time) in data/public/.")
+    if "Time" not in df.columns:
+        raise ValueError("The Time column is required for a temporal split; OpenML 1597 omits it. Use the original Kaggle creditcard.csv.")
+    df = df.sort_values("Time", kind="stable").reset_index(drop=True)
     y = (df["Class"].astype(str).str.strip("'") == "1").astype(int).to_numpy()
     amt = df["Amount"].to_numpy(dtype=float)
     feats = [f"V{i}" for i in range(1, 29)]

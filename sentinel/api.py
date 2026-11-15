@@ -99,7 +99,9 @@ class Live:
                     verification = "failed"
                     self.engine.mark_bad(tx)  # instant feedback: learn from failed step-up
             self.engine.update(tx)
-            if not math.isnan(tx["chargeback_ts"]):
+            # Only a fraud loss that occurs can produce this simulated chargeback.
+            # Offline benchmark features remain based on the original approve-all stream.
+            if out["fraud_loss"][0] and not math.isnan(tx["chargeback_ts"]):
                 self.engine.register_chargeback(tx["chargeback_ts"], tx)
             rec = {
                 "tx_id": tx["tx_id"], "ts": tx["ts"], "amount": tx["amount"], "category": tx["category"],

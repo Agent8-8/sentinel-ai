@@ -87,3 +87,15 @@ def test_expected_costs_match_realized_on_average():
         real = P.realized_cost(np.full(n, act), y, np.full(n, amt), c, rng)["cost"].mean()
         exp = P.expected_costs(p, amt, c)[act]
         assert math.isclose(real, exp, rel_tol=0.03), (act, real, exp)
+
+
+def test_validation_threshold_is_fixed_before_test():
+    from sentinel.models import validation_threshold
+    val_scores = np.array([0.01, 0.03, 0.05, 0.80])
+    val_labels = np.array([0, 0, 0, 1])
+    threshold = validation_threshold(val_scores, val_labels, target_fpr=0.5)
+    assert threshold == pytest.approx(0.03)
+    # Changing a later test sample doesn't change the validation cutoff.
+    assert (np.array([0.02, 0.04]) > threshold).tolist() == [False, True]
+    with pytest.raises(ValueError):
+        validation_threshold(np.array([0.1]), np.array([1]))

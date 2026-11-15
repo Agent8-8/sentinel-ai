@@ -57,13 +57,13 @@
 
 <section id="perf" class="view">
   <div class="card intro">
-    <p>All numbers below are on <b>held-out test data</b> (simulated days 74–91: holiday rush + a fraud ring pattern that never appears in training), averaged over 3 independently simulated merchant worlds. Models were trained only on chargeback labels that had arrived by the cutoff. Model selection used a separate validation window.</p>
+    <p>All numbers below are on <b>held-out test data</b> (simulated days 74–91: holiday rush + a fraud ring pattern that never appears in training), averaged over 3 independently simulated merchant worlds. Models were trained only on chargeback labels that had arrived by the cutoff. Model selection used a separate validation window. For the displayed 0.5% false-positive comparisons, the cutoff was calculated retrospectively from genuine test orders; it is not a threshold chosen in advance. Calibration uses simulated ground-truth labels. The original offline results assume simulated chargebacks even for blocked orders. The live replay now skips those chargebacks, so its results can differ.</p>
   </div>
   <div class="grid2">
     <div class="card"><h3>Detection quality vs. baselines</h3><div class="tablewrap"><table id="det"></table></div></div>
     <div class="card"><h3>Recall by fraud pattern <span class="muted">@ 0.5% of genuine orders flagged</span></h3><div class="chartbox tall"><canvas id="types"></canvas></div></div>
   </div>
-  <div class="card"><h3>Business outcome of decision policies <span class="muted">(test window, mean per world)</span></h3><div class="tablewrap"><table id="pol"></table></div></div>
+  <div class="card"><h3>Business outcome of decision policies <span class="muted">(simulated costs under stated assumptions; test window, mean per world)</span></h3><div class="tablewrap"><table id="pol"></table></div></div>
   <div class="grid2">
     <div class="card"><h3>Development experiments <span class="muted">(validation only)</span></h3><div class="tablewrap small"><table id="exp"></table></div></div>
     <div class="card"><h3>Real public data check <span class="muted">(ULB credit-card dataset, temporal split)</span></h3><div class="tablewrap"><table id="pub"></table></div>
@@ -72,7 +72,7 @@
 </section>
 
 <section id="whatif" class="view">
-  <div class="card intro"><p>Sentinel picks the action with the lowest <b>expected cost</b> for <i>this</i> order, given its calibrated fraud probability and amount. Change the business assumptions and the policy re-optimises instantly over the whole test period.</p></div>
+  <div class="card intro"><p>Sentinel picks the action with the lowest <b>expected cost</b> for <i>this</i> order, given its calibrated fraud probability and amount. Change the business assumptions and the policy re-optimises over precomputed test scores. Those scores assume the original chargeback history, even for blocked orders.</p></div>
   <div class="grid2">
     <div class="card" id="sliders"></div>
     <div class="card"><h3>Outcome</h3><div id="wiout" class="kpis small"></div><div class="chartbox"><canvas id="wichart"></canvas></div></div>

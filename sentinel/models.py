@@ -21,6 +21,21 @@ def cols(groups):
 
 
 # ---------------------------------------------------------------- metrics
+def validation_threshold(scores, labels, target_fpr=0.005):
+    """Choose a score cutoff from validation genuine orders, never test labels.
+
+    Strictly greater scores are flagged. Ties can make the achieved false-positive
+    rate lower than the requested target, and distribution shift can change it.
+    """
+    scores, labels = np.asarray(scores), np.asarray(labels)
+    if scores.ndim != 1 or labels.shape != scores.shape or not 0 < target_fpr < 1:
+        raise ValueError("Expected equal-length 1D arrays and 0 < target_fpr < 1")
+    good = scores[labels == 0]
+    if not len(good) or not np.isfinite(scores).all():
+        raise ValueError("Validation data needs finite scores and genuine examples")
+    return float(np.quantile(good, 1 - target_fpr))
+
+
 def recall_at_fpr(y, s, fpr=0.005, weight=None):
     """Fraud caught (count or $-weighted) when only `fpr` of legit traffic is flagged."""
     thr = np.quantile(s[y == 0], 1 - fpr)
