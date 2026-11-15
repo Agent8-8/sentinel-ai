@@ -13,7 +13,33 @@ The owner of a small online store. They lose money when a fraudulent order goes 
 - **Input:** one order (amount, account, card, device, IP, shipping address) plus what the store has seen from those before.
 - **Output:** a fraud risk score, an action (allow, verify, or decline), and the signals behind it.
 
-A gradient-boosted model (5 copies averaged, then calibrated) scores the risk from 41 features built only from earlier orders. A cost rule then picks the cheapest action, so a $9 order and a $900 order with the same risk can get different actions. An anomaly detector can send unusual orders to verification. Gemini is optional and only rewrites the explanation in plain English. It never changes a decision.
+A gradient-boosted model (5 copies averaged, then calibrated) scores the risk from 41 features built only from earlier orders. A cost rule then picks the cheapest action, so a $9 order and a $900 order with the same risk can get different actions. An anomaly detector can send unusual orders to verification. The explanation shown for each order comes from the model itself (which signals pushed the risk up), not from a chatbot.
+
+## What we added to the suggested card fraud project
+
+- **Our own user:** a small online store owner with no fraud team, instead of a bank.
+- **Our own data:** a store simulator (`sentinel/simulator.py`) with customers, devices, five kinds of fraud, and chargebacks that show up days late, the way they do in real life.
+- **Our own question:** not just "is this fraud?" but "what should the store do?" A cost rule picks allow, verify, or decline for each order.
+- **A real-data check:** the scoring model is also tested on the public ULB/Worldline card dataset.
+
+## How the AI is built (where to find the code)
+
+All the AI code is in the [`sentinel/`](sentinel/) folder. It uses [scikit-learn](https://scikit-learn.org/) for the models. No chatbot or outside AI service is used to make decisions. Here is the order things happen in, with a link to the exact code for each step:
+
+| Step | What it does | Code |
+|---|---|---|
+| 1. Make the data | Simulates a store: customers, cards, devices, normal orders and five fraud types, with late chargebacks | [`simulator.py` → `simulate()`](sentinel/simulator.py#L82) |
+| 2. Build features | Turns each order into 41 numbers (velocity, new device, cards per device, etc.), using **only orders that came before it** so the model can't peek at the future | [`features.py` → feature list](sentinel/features.py#L26), [`FeatureEngine`](sentinel/features.py#L81) |
+| 3. Split by time | The final model trains on days 0–63 (using only chargebacks that had arrived by day 63), validation is days 63–74, test is days 74–91. The model never sees the test days while training | [`data.py` → `splits()`](sentinel/data.py#L37), [`evaluate.py`](sentinel/evaluate.py#L71) |
+| 4. Handle late labels | Recent orders with no chargeback yet might still be fraud, so they count less in training | [`models.py` → `maturity_weights()`](sentinel/models.py#L106) |
+| 5. Train the model | **The main AI:** 5 gradient-boosted tree models (`HistGradientBoostingClassifier`), each with a different random seed, averaged together | [`models.py` → `hgb()`](sentinel/models.py#L91), [`pipeline.py` → `SentinelModel.fit()`](sentinel/pipeline.py#L28) |
+| 6. Calibrate | Adjusts the score so "0.30" really means about a 30% chance of fraud (isotonic regression, fit on validation data) | [`models.py` → `Calibrator`](sentinel/models.py#L130), [`pipeline.py` → `calibrate()`](sentinel/pipeline.py#L53) |
+| 7. Anomaly check | An `IsolationForest` trained only on normal orders flags very unusual ones for verification (never for decline) | [`pipeline.py`](sentinel/pipeline.py#L28) |
+| 8. Pick an action | For each order, works out the expected cost of allow, verify, and decline, and picks the cheapest | [`policy.py` → `expected_costs()` and `decide()`](sentinel/policy.py#L43) |
+| 9. Explain | Shows which signals raised the risk the most by setting each one back to normal and seeing how much the score drops | [`explain.py` → `reason_codes()`](sentinel/explain.py#L38) |
+| 10. Test | Trains on 3 separate simulated stores and scores the untouched test days | [`evaluate.py` → `run_world()`](sentinel/evaluate.py#L63) |
+
+The baselines it's compared against are in [`models.py`](sentinel/models.py): hand-made store rules ([`rules_score()`](sentinel/models.py#L69)) and logistic regression ([`logistic()`](sentinel/models.py#L85)). The model settings were picked on validation data only, in [`experiments.py`](sentinel/experiments.py).
 
 ## Results vs. baselines (later test period the model never trained on)
 
@@ -36,7 +62,7 @@ With a cutoff picked on validation data, the test period had 93.8% precision and
 
 ```bash
 ./run.sh                 # installs deps, runs tests, builds the model, starts the dashboard
-# open http://localhost:8000   (optional: export GEMINI_API_KEY=... first)
+# open http://localhost:8000
 ```
 
 Rebuild every result (about 20 min):
@@ -57,7 +83,7 @@ sentinel/data.py            train / validation / test split by time
 sentinel/models.py          baselines (rules, logistic regression) and the boosted model
 sentinel/pipeline.py        final model + anomaly detector
 sentinel/policy.py          allow / verify / decline by expected cost
-sentinel/explain.py         reason codes + optional Gemini wording
+sentinel/explain.py         reason codes (which signals raised the risk)
 sentinel/novelty.py         rarity scores used in explanations
 sentinel/experiments*.py    model choices, made on validation data only
 sentinel/evaluate.py        final test evaluation -> reports/results.json

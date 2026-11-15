@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-command reproduce + launch. Optional: export GEMINI_API_KEY=... first.
+# One-command reproduce + launch.
 set -e
 cd "$(dirname "$0")"
 [ -d .venv ] || python3 -m venv .venv

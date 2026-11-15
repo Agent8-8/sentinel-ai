@@ -216,7 +216,7 @@ def reset():
 
 
 @app.get("/api/tx/{tx_id}")
-def tx_detail(tx_id: str, narrate: bool = False):
+def tx_detail(tx_id: str):
     L = live()
     if tx_id not in L.by_id:
         raise HTTPException(404, "unknown or not yet processed transaction")
@@ -231,10 +231,8 @@ def tx_detail(tx_id: str, narrate: bool = False):
         reasons = [{"signal": "novelty", "impact": 0.0, "description": "novelty safety net: unusual combination "
                     f"sent to verification. Most unusual: {rare}"}] + reasons
     fx = E.facts(tx, f)
-    narrative = (E.narrate_case(rec["decision"], rec["p"], reasons, fx) if narrate
-                 else E.template_narrative(rec["decision"], rec["p"], reasons, fx))
-    return {"record": rec, "reasons": reasons, "facts": fx, "narrative": narrative,
-            "narrator": "gemini" if (narrate and E.gemini_available()) else "template"}
+    narrative = E.template_narrative(rec["decision"], rec["p"], reasons, fx)
+    return {"record": rec, "reasons": reasons, "facts": fx, "narrative": narrative}
 
 
 @app.post("/api/whatif")
@@ -259,22 +257,19 @@ def reports():
         p = ROOT / "reports" / f"{name}.json"
         if p.exists():
             out[name] = json.loads(p.read_text())
-    out["gemini"] = E.gemini_available()
     return out
 
 
 @app.post("/api/briefing")
 def briefing():
     s = live().state()["kpis"]
-    text = E.narrate_report(s)
-    if not text:
-        text = (f"• Processed {s['transactions']:,} orders (${s['volume_usd']:,.0f}); {s['auto_resolved_pct']}% resolved "
+    text = (f"• Processed {s['transactions']:,} orders (${s['volume_usd']:,.0f}); {s['auto_resolved_pct']}% resolved "
                 f"with no merchant action.\n• Stopped {s['fraud_caught']}/{s['fraud_total']} fraudulent orders "
                 f"(${s['fraud_usd_stopped']:,.0f} of ${s['fraud_usd_total']:,.0f}).\n"
                 f"• False declines: {s['false_decline_rate_pct']}% of genuine customers; "
                 f"{s['legit_friction_pct']}% were asked to verify.\n"
                 f"Recommendation: net savings vs. approving everything are ${s['net_savings_usd']:,.0f}; keep current settings.")
-    return {"text": text, "narrator": "gemini" if E.gemini_available() else "template"}
+    return {"text": text}
 
 
 DASH = ROOT / "dashboard"

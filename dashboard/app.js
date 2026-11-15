@@ -62,23 +62,21 @@ function render(s) {
 }
 $("#feed").onclick = (e) => { const tr = e.target.closest("tr[data-id]"); if (tr) showDetail(tr.dataset.id); };
 
-async function showDetail(id, narrate = false) {
+async function showDetail(id) {
   selected = id;
-  const d = await api(`/api/tx/${id}?narrate=${narrate}`);
+  const d = await api(`/api/tx/${id}`);
   const r = d.record, f = d.facts;
   const maxImp = Math.max(0.01, ...d.reasons.map((x) => x.impact));
   const ec = ["allow", "hold", "decline"].map((a) => `<div class="${a === r.decision ? "chosen" : ""}">${a}<b>${fmt$(r.expected_costs[a] * 100 / 100)}</b><span class="muted">${r.expected_costs[a].toFixed(2)} exp. cost</span></div>`).join("");
   $("#detail").innerHTML = `<h3>${r.tx_id} · $${r.amount.toFixed(2)} ${r.category} <span class="pill ${r.decision}">${r.decision}</span></h3>
     <div>Calibrated fraud probability: <b>${pct(r.p, 2)}</b> ${r.verification ? `· verification <b>${r.verification}</b>` : ""}</div>
     <div class="ec">${ec}</div>
-    <div class="narr" id="narr">${d.narrative}<div class="foot">narrator: ${d.narrator}</div></div>
-    <button class="small" id="gem">Explain with Gemini</button>
+    <div class="narr" id="narr">${d.narrative}</div>
     <h3 style="margin-top:12px">Top risk drivers <span class="muted">(drop in P(fraud) if this signal looked normal)</span></h3>
     ${d.reasons.length ? d.reasons.map((x) => `<div class="reason">${x.description} <span class="muted">−${pct(x.impact, 1)}</span><div class="bar" style="width:${100 * x.impact / maxImp}%"></div></div>`).join("") : '<p class="muted">No signal raises risk above normal.</p>'}
     <h3 style="margin-top:12px">Facts</h3>
     <div class="facts">${Object.entries(f).map(([k, v]) => `<div><span>${k.replaceAll("_", " ")}</span> ${v === null ? "–" : v}</div>`).join("")}</div>
     <p class="foot">Ground truth (simulation): ${r.truth_fraud ? r.truth_type : "genuine"}</p>`;
-  $("#gem").onclick = () => { $("#narr").textContent = "Asking Gemini…"; showDetail(id, true); };
   document.querySelectorAll("#feed tr").forEach((t) => t.classList.toggle("sel", t.dataset.id === id));
 }
 
@@ -91,7 +89,7 @@ $("#play").onclick = () => {
 };
 $("#step").onclick = () => tickOnce(100);
 $("#reset").onclick = async () => { stop(); $("#kpis").innerHTML = '<div class="kpi">Rebuilding behavioural state…</div>'; render(await api("/api/reset", {})); };
-$("#brief").onclick = async () => { $("#briefing").textContent = "Writing…"; const b = await api("/api/briefing", {}); $("#briefing").textContent = b.text; $("#briefing").classList.remove("muted"); $("#briefsrc").textContent = "via " + b.narrator; };
+$("#brief").onclick = async () => { $("#briefing").textContent = "Writing…"; const b = await api("/api/briefing", {}); $("#briefing").textContent = b.text; $("#briefing").classList.remove("muted"); };
 api("/api/state").then(render);
 
 // ---------------------------------------------------------------- reports
