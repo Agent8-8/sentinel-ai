@@ -1,0 +1,13 @@
+# environments & caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.claude/
+.DS_Store
+
+# generated data (rebuilt by sentinel.data.load) and downloaded datasets
+data/
+
+# trained model (rebuilt by `python -m sentinel.evaluate`, run automatically by run.sh)
+artifacts/

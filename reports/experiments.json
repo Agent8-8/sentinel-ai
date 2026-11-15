@@ -1,0 +1,333 @@
+{
+ "seeds": [
+  7,
+  11,
+  23
+ ],
+ "best_params": {
+  "learning_rate": 0.05,
+  "max_leaf_nodes": 7,
+  "min_samples_leaf": 20,
+  "l2_regularization": 1.0
+ },
+ "valid": {
+  "rules engine": {
+   "auprc": 0.4119248190244463,
+   "auroc": 0.816398293255762,
+   "recall@0.5%fpr": 0.4690273247044792,
+   "recall@1%fpr": 0.4729488933319303,
+   "dollar_recall@0.5%fpr": 0.4220423969445652,
+   "recall_card_testing": 0.6666709799861973,
+   "recall_ato": 0.29751461988304095,
+   "recall_stolen_card": 0.28484331395865553,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.07170935535227078
+  },
+  "logistic, transaction-only": {
+   "auprc": 0.7099230509175113,
+   "auroc": 0.946874188978568,
+   "recall@0.5%fpr": 0.666326423234768,
+   "recall@1%fpr": 0.7309586446385352,
+   "dollar_recall@0.5%fpr": 0.5530155432011656,
+   "recall_card_testing": 0.8993745686680469,
+   "recall_ato": 0.2513970110461338,
+   "recall_stolen_card": 0.7595406957109084,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.03723821456787044
+  },
+  "GBM, transaction-only": {
+   "auprc": 0.8048027184881476,
+   "auroc": 0.9518275679226402,
+   "recall@0.5%fpr": 0.8116138763197588,
+   "recall@1%fpr": 0.8700129783577116,
+   "dollar_recall@0.5%fpr": 0.764224678369926,
+   "recall_card_testing": 0.9785628019323672,
+   "recall_ato": 0.6502923976608187,
+   "recall_stolen_card": 0.906112799729821,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.01842663265312073
+  },
+  "logistic, all features": {
+   "auprc": 0.8891822313391996,
+   "auroc": 0.9550166833195263,
+   "recall@0.5%fpr": 0.8784348802132659,
+   "recall@1%fpr": 0.8870076116314146,
+   "dollar_recall@0.5%fpr": 0.8512692516463014,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.8598927875243665,
+   "recall_stolen_card": 0.9469773725092874,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.010627269675572464
+  },
+  "GBM, all features": {
+   "auprc": 0.8980748776909763,
+   "auroc": 0.9522424796210167,
+   "recall@0.5%fpr": 0.9077308919990178,
+   "recall@1%fpr": 0.9118453821600196,
+   "dollar_recall@0.5%fpr": 0.8721155587855148,
+   "recall_card_testing": 0.9971014492753624,
+   "recall_ato": 0.9912280701754387,
+   "recall_stolen_card": 0.9665831244778613,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.01548017313358196
+  },
+  "GBM without [velocity]": {
+   "auprc": 0.8966689663230082,
+   "auroc": 0.9525785628882478,
+   "recall@0.5%fpr": 0.9005156266442175,
+   "recall@1%fpr": 0.9051667894349152,
+   "dollar_recall@0.5%fpr": 0.8571799889532589,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9701104613385314,
+   "recall_stolen_card": 0.9453065287331804,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.015279922905312113
+  },
+  "GBM without [deviation]": {
+   "auprc": 0.8969366205814095,
+   "auroc": 0.9525316263816915,
+   "recall@0.5%fpr": 0.9061805044021186,
+   "recall@1%fpr": 0.9118453821600196,
+   "dollar_recall@0.5%fpr": 0.8647894344213377,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9824561403508771,
+   "recall_stolen_card": 0.959490925896301,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.016195540259960974
+  },
+  "GBM without [linkage]": {
+   "auprc": 0.8870687260593363,
+   "auroc": 0.9498426413531912,
+   "recall@0.5%fpr": 0.8950436704198674,
+   "recall@1%fpr": 0.9055771861517415,
+   "dollar_recall@0.5%fpr": 0.8852075933537226,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9239928525016244,
+   "recall_stolen_card": 0.9787234042553191,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.020245840184664642
+  },
+  "GBM without [reputation]": {
+   "auprc": 0.9008971886286742,
+   "auroc": 0.9517935112398755,
+   "recall@0.5%fpr": 0.9016556175242906,
+   "recall@1%fpr": 0.9102949945631204,
+   "dollar_recall@0.5%fpr": 0.8636160473761288,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9617771280051981,
+   "recall_stolen_card": 0.959490925896301,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.013662758458968863
+  },
+  "GBM without [merchant_pulse]": {
+   "auprc": 0.8971830551010954,
+   "auroc": 0.9528853882426649,
+   "recall@0.5%fpr": 0.9032060051211898,
+   "recall@1%fpr": 0.9138061664737451,
+   "dollar_recall@0.5%fpr": 0.8630535342119335,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9617771280051981,
+   "recall_stolen_card": 0.9665831244778613,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.014777025294956118
+  },
+  "GBM + maturity weighting": {
+   "auprc": 0.9056104164316037,
+   "auroc": 0.9506822845747044,
+   "recall@0.5%fpr": 0.9046301168052194,
+   "recall@1%fpr": 0.9122557788768458,
+   "dollar_recall@0.5%fpr": 0.8801155906999713,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9613385315139701,
+   "recall_stolen_card": 0.9770347855454239,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.0191152841713532
+  },
+  "GBM + maturity + gap week": {
+   "auprc": 0.9018632868061389,
+   "auroc": 0.9523162492914835,
+   "recall@0.5%fpr": 0.9112420639096426,
+   "recall@1%fpr": 0.9138061664737451,
+   "dollar_recall@0.5%fpr": 0.8968208945551027,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9912280701754387,
+   "recall_stolen_card": 0.9824561403508771,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.020866495606373367
+  },
+  "GBM oracle labels (upper bound)": {
+   "auprc": 0.9145387265741695,
+   "auroc": 0.9549351247805481,
+   "recall@0.5%fpr": 0.9087446069662212,
+   "recall@1%fpr": 0.9122557788768458,
+   "dollar_recall@0.5%fpr": 0.9035272860641824,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9741228070175438,
+   "recall_stolen_card": 0.9929078014184397,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.014005736575464958
+  },
+  "GBM lr=0.05 leaves=31 min_leaf=40 l2=1.0": {
+   "auprc": 0.9018632868061389,
+   "auroc": 0.9523162492914835,
+   "recall@0.5%fpr": 0.9112420639096426,
+   "recall@1%fpr": 0.9138061664737451,
+   "dollar_recall@0.5%fpr": 0.8968208945551027,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9912280701754387,
+   "recall_stolen_card": 0.9824561403508771,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.020866495606373367
+  },
+  "GBM lr=0.05 leaves=15 min_leaf=20 l2=1.0": {
+   "auprc": 0.9055704965811661,
+   "auroc": 0.9507047446088223,
+   "recall@0.5%fpr": 0.9112420639096426,
+   "recall@1%fpr": 0.9138061664737451,
+   "dollar_recall@0.5%fpr": 0.8968208945551027,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9912280701754387,
+   "recall_stolen_card": 0.9824561403508771,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.02065253923976564
+  },
+  "GBM lr=0.05 leaves=7 min_leaf=20 l2=1.0": {
+   "auprc": 0.9061040802331052,
+   "auroc": 0.9537734108980839,
+   "recall@0.5%fpr": 0.9102949945631204,
+   "recall@1%fpr": 0.9138061664737451,
+   "dollar_recall@0.5%fpr": 0.886387469536881,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9741228070175438,
+   "recall_stolen_card": 1.0,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.019528009964507178
+  },
+  "GBM lr=0.03 leaves=15 min_leaf=20 l2=3.0": {
+   "auprc": 0.9032063186451175,
+   "auroc": 0.951127075385382,
+   "recall@0.5%fpr": 0.9138061664737451,
+   "recall@1%fpr": 0.9138061664737451,
+   "dollar_recall@0.5%fpr": 0.9098425069944027,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9912280701754387,
+   "recall_stolen_card": 1.0,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.02269609513583513
+  },
+  "GBM lr=0.1 leaves=15 min_leaf=40 l2=0.0": {
+   "auprc": 0.8784366022226263,
+   "auroc": 0.9535322227011783,
+   "recall@0.5%fpr": 0.869644673611842,
+   "recall@1%fpr": 0.8978006945175209,
+   "dollar_recall@0.5%fpr": 0.8122926677810431,
+   "recall_card_testing": 0.991304347826087,
+   "recall_ato": 0.890220922677063,
+   "recall_stolen_card": 0.8763931104356636,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.01664545656439928
+  },
+  "GBM lr=0.03 leaves=63 min_leaf=80 l2=3.0": {
+   "auprc": 0.9010919801005963,
+   "auroc": 0.9511288184888537,
+   "recall@0.5%fpr": 0.9087446069662212,
+   "recall@1%fpr": 0.9138061664737451,
+   "dollar_recall@0.5%fpr": 0.9016663961022116,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9741228070175438,
+   "recall_stolen_card": 0.9929078014184397,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.02211895686081365
+  },
+  "GBM 5-seed bag": {
+   "auprc": 0.9100457240390948,
+   "auroc": 0.9520817106807361,
+   "recall@0.5%fpr": 0.9122557788768458,
+   "recall@1%fpr": 0.9138061664737451,
+   "dollar_recall@0.5%fpr": 0.905267427953175,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9824561403508771,
+   "recall_stolen_card": 1.0,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.019230265008845372
+  },
+  "GBM bag + 0.1 IsolationForest rank blend": {
+   "auprc": 0.90740450303635,
+   "auroc": 0.9513821461447135,
+   "recall@0.5%fpr": 0.8984285664176225,
+   "recall@1%fpr": 0.9061805044021186,
+   "dollar_recall@0.5%fpr": 0.8742240666244857,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9649122807017544,
+   "recall_stolen_card": 0.9382143301516201,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.014425417864137029
+  },
+  "GBM bag + 0.25 IsolationForest rank blend": {
+   "auprc": 0.9027769931206526,
+   "auroc": 0.9503978967913883,
+   "recall@0.5%fpr": 0.8922270160300255,
+   "recall@1%fpr": 0.8999789540145217,
+   "dollar_recall@0.5%fpr": 0.8656522572786112,
+   "recall_card_testing": 1.0,
+   "recall_ato": 0.9473684210526315,
+   "recall_stolen_card": 0.9240299329884997,
+   "recall_friendly": 0.0,
+   "auprc_sd": 0.012661061882554028
+  },
+  "unseen card_testing | GBM transaction-only": {
+   "auprc": 0.019882985211333817,
+   "auroc": 0.6827424006654077,
+   "recall@0.5%fpr": 0.0,
+   "recall@1%fpr": 0.0,
+   "dollar_recall@0.5%fpr": 0.0,
+   "recall_card_testing": 0.0,
+   "auprc_sd": 0.007398953875167232
+  },
+  "unseen card_testing | GBM all behavioural": {
+   "auprc": 0.08878579051426462,
+   "auroc": 0.8989941812197798,
+   "recall@0.5%fpr": 0.047619047619047616,
+   "recall@1%fpr": 0.14535886818495514,
+   "dollar_recall@0.5%fpr": 0.11174521704186995,
+   "recall_card_testing": 0.047619047619047616,
+   "auprc_sd": 0.05494434600586595
+  },
+  "unseen ato          | GBM transaction-only": {
+   "auprc": 0.005504962709450983,
+   "auroc": 0.6705548296015614,
+   "recall@0.5%fpr": 0.0,
+   "recall@1%fpr": 0.0,
+   "dollar_recall@0.5%fpr": 0.0,
+   "recall_ato": 0.0,
+   "auprc_sd": 0.0010363955111161477
+  },
+  "unseen ato          | GBM all behavioural": {
+   "auprc": 0.016595823723800463,
+   "auroc": 0.8525869561192226,
+   "recall@0.5%fpr": 0.008771929824561403,
+   "recall@1%fpr": 0.02631578947368421,
+   "dollar_recall@0.5%fpr": 0.0171693808192545,
+   "recall_ato": 0.008771929824561403,
+   "auprc_sd": 0.006803104864959865
+  },
+  "unseen stolen_card  | GBM transaction-only": {
+   "auprc": 0.15748927839562907,
+   "auroc": 0.8701650846566163,
+   "recall@0.5%fpr": 0.32700545690467303,
+   "recall@1%fpr": 0.3624664498124744,
+   "dollar_recall@0.5%fpr": 0.450784271432114,
+   "recall_stolen_card": 0.32700545690467303,
+   "auprc_sd": 0.1684748863602884
+  },
+  "unseen stolen_card  | GBM all behavioural": {
+   "auprc": 0.3537623933410365,
+   "auroc": 0.9599134605032923,
+   "recall@0.5%fpr": 0.5377983967009723,
+   "recall@1%fpr": 0.6401109155868394,
+   "dollar_recall@0.5%fpr": 0.4725463637446583,
+   "recall_stolen_card": 0.5377983967009723,
+   "auprc_sd": 0.09858417601572901
+  }
+ }
+}

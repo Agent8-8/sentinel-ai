@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentinel AI</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="logo">◆</span> Sentinel AI <span class="tag">autonomous fraud prevention · simulated payments</span></div>
+  <nav>
+    <button class="tab active" data-view="live">Live operations</button>
+    <button class="tab" data-view="perf">Model evidence</button>
+    <button class="tab" data-view="whatif">What-if</button>
+  </nav>
+</header>
+
+<main>
+<section id="live" class="view active">
+  <div class="controls">
+    <button id="play" class="primary">▶ Run</button>
+    <button id="step">Step +100</button>
+    <label>Speed <select id="speed"><option value="10">slow</option><option value="40" selected>normal</option><option value="150">fast</option><option value="600">turbo</option></select></label>
+    <button id="reset" class="ghost">Reset</button>
+    <div class="progress"><div id="bar"></div></div>
+    <span id="simday" class="muted"></span>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="grid2">
+    <div class="card"><h3>Decisions per hour <span class="muted">(last 72 simulated hours)</span></h3><div class="chartbox"><canvas id="hourly"></canvas></div></div>
+    <div class="card"><h3>Risk distribution <span class="muted">(calibrated P(fraud), log scale)</span></h3><div class="chartbox"><canvas id="risk"></canvas></div></div>
+  </div>
+
+  <div class="grid-feed">
+    <div class="card">
+      <h3>Live decision feed <span class="muted">click a row to see why</span></h3>
+      <div class="tablewrap"><table id="feed"><thead><tr>
+        <th>time</th><th>amount</th><th>category</th><th>IP</th><th>risk</th><th>decision</th><th>verification</th><th title="Simulation ground truth, not visible to the model">truth*</th>
+      </tr></thead><tbody></tbody></table></div>
+      <p class="foot">* ground truth from the simulator, shown for demo transparency only; the model never sees it.</p>
+    </div>
+    <div class="card" id="detail">
+      <h3>Case explanation</h3>
+      <p class="muted">Select a transaction.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Merchant briefing <button id="brief" class="small">Generate</button> <span id="briefsrc" class="muted"></span></h3>
+    <pre id="briefing" class="muted">Generate a plain-English summary of what Sentinel did (Gemini if GEMINI_API_KEY is set, otherwise template).</pre>
+  </div>
+</section>
+
+<section id="perf" class="view">
+  <div class="card intro">
+    <p>All numbers below are on <b>held-out test data</b> (simulated days 74–91: holiday rush + a fraud ring pattern that never appears in training), averaged over 3 independently simulated merchant worlds. Models were trained only on chargeback labels that had arrived by the cutoff. Model selection used a separate validation window.</p>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Detection quality vs. baselines</h3><div class="tablewrap"><table id="det"></table></div></div>
+    <div class="card"><h3>Recall by fraud pattern <span class="muted">@ 0.5% of genuine orders flagged</span></h3><div class="chartbox tall"><canvas id="types"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Business outcome of decision policies <span class="muted">(test window, mean per world)</span></h3><div class="tablewrap"><table id="pol"></table></div></div>
+  <div class="grid2">
+    <div class="card"><h3>Development experiments <span class="muted">(validation only)</span></h3><div class="tablewrap small"><table id="exp"></table></div></div>
+    <div class="card"><h3>Real public data check <span class="muted">(ULB credit-card dataset, temporal split)</span></h3><div class="tablewrap"><table id="pub"></table></div>
+      <p class="foot">284,807 real European card transactions. Anonymised features, no identities, so only the modelling stack is tested here, not behavioural features.</p></div>
+  </div>
+</section>
+
+<section id="whatif" class="view">
+  <div class="card intro"><p>Sentinel picks the action with the lowest <b>expected cost</b> for <i>this</i> order, given its calibrated fraud probability and amount. Change the business assumptions and the policy re-optimises instantly over the whole test period.</p></div>
+  <div class="grid2">
+    <div class="card" id="sliders"></div>
+    <div class="card"><h3>Outcome</h3><div id="wiout" class="kpis small"></div><div class="chartbox"><canvas id="wichart"></canvas></div></div>
+  </div>
+</section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>

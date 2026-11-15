@@ -1,0 +1,946 @@
+{
+ "config": {
+  "params": {
+   "learning_rate": 0.05,
+   "max_leaf_nodes": 7,
+   "min_samples_leaf": 20,
+   "l2_regularization": 1.0
+  },
+  "iso_weight": 0.0,
+  "costs": {
+   "margin": 0.3,
+   "chargeback_fee": 25.0,
+   "churn_cost": 20.0,
+   "friction": 0.4,
+   "catch_rate": 0.85,
+   "abandon": 0.07
+  },
+  "seeds": [
+   7,
+   11,
+   23
+  ],
+  "features": [
+   "amount_log",
+   "category",
+   "n_items",
+   "local_hour",
+   "is_guest",
+   "account_age_days_log",
+   "email_age_days_log",
+   "ship_bill_mismatch",
+   "ip_bill_country_mismatch",
+   "card_bill_country_mismatch",
+   "ip_bill_distance_km_log",
+   "foreign_ip",
+   "card_tx_1h",
+   "card_tx_24h",
+   "card_amt_24h_log",
+   "acct_tx_1h",
+   "acct_tx_24h",
+   "secs_since_card_last_log",
+   "ip_cards_1h",
+   "amt_vs_acct_median",
+   "acct_history_n_log",
+   "card_first_seen",
+   "new_device_for_acct",
+   "new_addr_for_acct",
+   "new_ip_country_for_acct",
+   "hour_vs_acct_typical",
+   "acct_distinct_devices_7d",
+   "new_category_for_acct",
+   "dev_distinct_cards_24h",
+   "dev_distinct_cards_all",
+   "dev_distinct_accts_all",
+   "dev_tx_1h",
+   "addr_distinct_cards_30d",
+   "addr_distinct_accts_30d",
+   "dev_age_days_log",
+   "dev_confirmed_fraud",
+   "addr_confirmed_fraud",
+   "card_confirmed_fraud",
+   "acct_confirmed_fraud",
+   "merchant_small_tx_10m",
+   "merchant_new_cards_10m"
+  ]
+ },
+ "mean": {
+  "detection": {
+   "rules engine": {
+    "auprc": 0.379024891359367,
+    "auroc": 0.861179259658076,
+    "recall@0.5%fpr": 0.41013030746146706,
+    "recall@1%fpr": 0.4114716890845389,
+    "dollar_recall@0.5%fpr": 0.24812035631698995,
+    "auprc_ci95": [
+     0.41016721736688855,
+     0.5104166657457415
+    ],
+    "recall_by_type@0.5%fpr": {
+     "card_testing": 0.7572636815920397,
+     "ato": 0.4116666666666667,
+     "stolen_card": 0.32651991614255765,
+     "sleeper_ring": 0.0,
+     "friendly": 0.0
+    }
+   },
+   "logistic (transaction-only)": {
+    "auprc": 0.6002058662064501,
+    "auroc": 0.8897283381191601,
+    "recall@0.5%fpr": 0.5382711448959411,
+    "recall@1%fpr": 0.5685660070479804,
+    "dollar_recall@0.5%fpr": 0.3064239246604868,
+    "auprc_ci95": [
+     0.5638509170279019,
+     0.6483634346250462
+    ],
+    "recall_by_type@0.5%fpr": {
+     "card_testing": 0.9531564400221116,
+     "ato": 0.3709722222222222,
+     "stolen_card": 0.8141509433962265,
+     "sleeper_ring": 0.0,
+     "friendly": 0.0
+    }
+   },
+   "GBM (transaction-only)": {
+    "auprc": 0.5858160127125424,
+    "auroc": 0.8217024994379987,
+    "recall@0.5%fpr": 0.5907096214223991,
+    "recall@1%fpr": 0.6080881239365351,
+    "dollar_recall@0.5%fpr": 0.39022136761406134,
+    "auprc_ci95": [
+     0.5230724848715133,
+     0.6225931833098055
+    ],
+    "recall_by_type@0.5%fpr": {
+     "card_testing": 0.9737037037037037,
+     "ato": 0.7520833333333333,
+     "stolen_card": 0.8774633123689727,
+     "sleeper_ring": 0.0,
+     "friendly": 0.0
+    }
+   },
+   "Sentinel (behavioural GBM bag)": {
+    "auprc": 0.8934350260232092,
+    "auroc": 0.965564554264788,
+    "recall@0.5%fpr": 0.9118996839989971,
+    "recall@1%fpr": 0.9118996839989971,
+    "dollar_recall@0.5%fpr": 0.907615519002935,
+    "auprc_ci95": [
+     0.8376157767253778,
+     0.9006557395378914
+    ],
+    "recall_by_type@0.5%fpr": {
+     "card_testing": 1.0,
+     "ato": 0.9325,
+     "stolen_card": 0.960377358490566,
+     "sleeper_ring": 0.9280193236714976,
+     "friendly": 0.0
+    }
+   },
+   "Sentinel + novelty gate (flag = review or verify)": {
+    "genuine_flagged": 0.010667922377526408,
+    "recall": 0.9196291983399448,
+    "dollar_recall": 0.9193706396860772,
+    "recall_by_type": {
+     "card_testing": 1.0,
+     "ato": 0.9380555555555555,
+     "stolen_card": 0.960377358490566,
+     "sleeper_ring": 0.9473429951690822,
+     "friendly": 0.01075268817204301
+    }
+   }
+  },
+  "calibration": {
+   "brier": 0.005186425737877401,
+   "ece": 0.003960877593161061,
+   "mean_p": 0.017255170299392966,
+   "fraud_rate": 0.021084522577322965
+  },
+  "policy": {
+   "approve everything": {
+    "total_cost": 82037.29666666666,
+    "fraud_dollars": 70737.29666666666,
+    "fraud_dollars_stopped": 0.0,
+    "fraud_dollar_stop_rate": 0.0,
+    "fraud_count_stop_rate": 0.0,
+    "false_decline_rate": 0.0,
+    "legit_friction_rate": 0.0,
+    "legit_lost_rate": 0.0,
+    "legit_revenue_lost": 0.0,
+    "allow_rate": 1.0,
+    "hold_rate": 0.0,
+    "decline_rate": 0.0,
+    "merchant_reviews": 0.0
+   },
+   "rules -> manual review": {
+    "total_cost": 67958.73700000001,
+    "fraud_dollars": 70737.29666666666,
+    "fraud_dollars_stopped": 12260.74,
+    "fraud_dollar_stop_rate": 0.17381814426632525,
+    "fraud_count_stop_rate": 0.2308254842145854,
+    "false_decline_rate": 0.0,
+    "legit_friction_rate": 0.0020494270933288047,
+    "legit_lost_rate": 0.0001906195218880385,
+    "legit_revenue_lost": 2174.1566666666668,
+    "allow_rate": 1.0,
+    "hold_rate": 0.0,
+    "decline_rate": 0.0,
+    "merchant_reviews": 162.33333333333334,
+    "note": "every flagged order needs a human decision"
+   },
+   "rules -> auto-decline": {
+    "total_cost": 73398.97833333333,
+    "fraud_dollars": 70737.29666666666,
+    "fraud_dollars_stopped": 14415.61,
+    "fraud_dollar_stop_rate": 0.20418046737341866,
+    "fraud_count_stop_rate": 0.26725975078809355,
+    "false_decline_rate": 0.0020494270933288047,
+    "legit_friction_rate": 0.0,
+    "legit_lost_rate": 0.0020494270933288047,
+    "legit_revenue_lost": 26335.416666666668,
+    "allow_rate": 0.9924309937780903,
+    "hold_rate": 0.0,
+    "decline_rate": 0.0075690062219095355,
+    "merchant_reviews": 0.0
+   },
+   "Sentinel score, binary threshold": {
+    "total_cost": 21986.028666666665,
+    "fraud_dollars": 70737.29666666666,
+    "fraud_dollars_stopped": 53245.05000000001,
+    "fraud_dollar_stop_rate": 0.7562132846609723,
+    "fraud_count_stop_rate": 0.8300754049916196,
+    "false_decline_rate": 0.0014806474897325183,
+    "legit_friction_rate": 0.0,
+    "legit_lost_rate": 0.0014806474897325183,
+    "legit_revenue_lost": 6245.94,
+    "allow_rate": 0.9811918627633881,
+    "hold_rate": 0.0,
+    "decline_rate": 0.01880813723661189,
+    "merchant_reviews": 0.0
+   },
+   "Sentinel score, 3-way fixed thresholds": {
+    "total_cost": 23851.808999999997,
+    "fraud_dollars": 70737.29666666666,
+    "fraud_dollars_stopped": 50825.76666666666,
+    "fraud_dollar_stop_rate": 0.7229579092569325,
+    "fraud_count_stop_rate": 0.7970492913203446,
+    "false_decline_rate": 0.0007272612590680958,
+    "legit_friction_rate": 0.0007533862306644226,
+    "legit_lost_rate": 0.0007432907533375517,
+    "legit_revenue_lost": 4078.93,
+    "allow_rate": 0.9811918627633881,
+    "hold_rate": 0.0056840485499395485,
+    "decline_rate": 0.013124088686672341,
+    "merchant_reviews": 0.0
+   },
+   "Sentinel expected-cost policy": {
+    "total_cost": 15007.178,
+    "fraud_dollars": 70737.29666666666,
+    "fraud_dollars_stopped": 58107.33666666667,
+    "fraud_dollar_stop_rate": 0.820683941682726,
+    "fraud_count_stop_rate": 0.8660269523529539,
+    "false_decline_rate": 0.00025370823176384526,
+    "legit_friction_rate": 0.0019892070045146476,
+    "legit_lost_rate": 0.00042840773666018387,
+    "legit_revenue_lost": 2211.3933333333334,
+    "allow_rate": 0.9785701224863214,
+    "hold_rate": 0.00724157945162257,
+    "decline_rate": 0.014188298062056076,
+    "merchant_reviews": 0.0
+   },
+   "Sentinel expected-cost + novelty gate": {
+    "total_cost": 15207.489000000001,
+    "fraud_dollars": 70737.29666666666,
+    "fraud_dollars_stopped": 58792.82000000001,
+    "fraud_dollar_stop_rate": 0.8309595512522412,
+    "fraud_count_stop_rate": 0.8721878392429211,
+    "false_decline_rate": 0.00025370823176384526,
+    "legit_friction_rate": 0.01023952778717911,
+    "legit_lost_rate": 0.0011753994095569959,
+    "legit_revenue_lost": 4628.93,
+    "allow_rate": 0.9703413576945161,
+    "hold_rate": 0.015470344243427803,
+    "decline_rate": 0.014188298062056076,
+    "merchant_reviews": 0.0
+   },
+   "Sentinel full (cost + novelty gate + trust memory)": {
+    "total_cost": 15097.352333333334,
+    "fraud_dollars": 70737.29666666666,
+    "fraud_dollars_stopped": 58758.98666666667,
+    "fraud_dollar_stop_rate": 0.830469347500391,
+    "fraud_count_stop_rate": 0.870732834705895,
+    "false_decline_rate": 0.00025370823176384526,
+    "legit_friction_rate": 0.008426596941151596,
+    "legit_lost_rate": 0.0010320011658046092,
+    "legit_revenue_lost": 4245.030000000001,
+    "allow_rate": 0.972147314875329,
+    "hold_rate": 0.013664387062614932,
+    "decline_rate": 0.014188298062056076,
+    "merchant_reviews": 0.0
+   }
+  }
+ },
+ "per_world": {
+  "7": {
+   "detection": {
+    "rules engine": {
+     "auprc": 0.4609924730021694,
+     "auroc": 0.9005284698547125,
+     "recall@0.5%fpr": 0.5105882352941177,
+     "recall@1%fpr": 0.5105882352941177,
+     "dollar_recall@0.5%fpr": 0.2480949129554629,
+     "auprc_ci95": [
+      0.41016721736688855,
+      0.5104166657457415
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 0.9751243781094527,
+      "ato": 0.56,
+      "stolen_card": 0.23333333333333334,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "logistic (transaction-only)": {
+     "auprc": 0.6068088969762944,
+     "auroc": 0.8624689155809695,
+     "recall@0.5%fpr": 0.5741176470588235,
+     "recall@1%fpr": 0.5858823529411765,
+     "dollar_recall@0.5%fpr": 0.3083812117205031,
+     "auprc_ci95": [
+      0.5638509170279019,
+      0.6483634346250462
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 0.9950248756218906,
+      "ato": 0.64,
+      "stolen_card": 0.9333333333333333,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "GBM (transaction-only)": {
+     "auprc": 0.572928960039851,
+     "auroc": 0.7773033033533663,
+     "recall@0.5%fpr": 0.5858823529411765,
+     "recall@1%fpr": 0.5882352941176471,
+     "dollar_recall@0.5%fpr": 0.34819406592809243,
+     "auprc_ci95": [
+      0.5230724848715133,
+      0.6225931833098055
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 1.0,
+      "ato": 0.8,
+      "stolen_card": 0.9333333333333333,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "Sentinel (behavioural GBM bag)": {
+     "auprc": 0.8714111237299116,
+     "auroc": 0.9557137260458952,
+     "recall@0.5%fpr": 0.8870588235294118,
+     "recall@1%fpr": 0.8870588235294118,
+     "dollar_recall@0.5%fpr": 0.8713905006857219,
+     "auprc_ci95": [
+      0.8376157767253778,
+      0.9006557395378914
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 1.0,
+      "ato": 0.96,
+      "stolen_card": 1.0,
+      "sleeper_ring": 0.8840579710144928,
+      "friendly": 0.0
+     }
+    },
+    "Sentinel + novelty gate (flag = review or verify)": {
+     "genuine_flagged": 0.007463039062869019,
+     "recall": 0.908235294117647,
+     "dollar_recall": 0.9060875840746782,
+     "recall_by_type": {
+      "card_testing": 1.0,
+      "ato": 0.96,
+      "stolen_card": 1.0,
+      "sleeper_ring": 0.9420289855072463,
+      "friendly": 0.03225806451612903
+     }
+    }
+   },
+   "calibration": {
+    "brier": 0.00405819179014687,
+    "ece": 0.0032310790053662205,
+    "mean_p": 0.016448491285428368,
+    "fraud_rate": 0.01967957029079459
+   },
+   "policy": {
+    "approve everything": {
+     "total_cost": 77219.06999999999,
+     "fraud_dollars": 66594.06999999999,
+     "fraud_dollars_stopped": 0.0,
+     "fraud_dollar_stop_rate": 0.0,
+     "fraud_count_stop_rate": 0.0,
+     "false_decline_rate": 0.0,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0,
+     "legit_revenue_lost": 0.0,
+     "allow_rate": 1.0,
+     "hold_rate": 0.0,
+     "decline_rate": 0.0,
+     "merchant_reviews": 0
+    },
+    "rules -> manual review": {
+     "total_cost": 61854.54,
+     "fraud_dollars": 66594.06999999999,
+     "fraud_dollars_stopped": 12648.660000000002,
+     "fraud_dollar_stop_rate": 0.18993673160388008,
+     "fraud_count_stop_rate": 0.3129411764705882,
+     "false_decline_rate": 0.0,
+     "legit_friction_rate": 0.002456190071323981,
+     "legit_lost_rate": 0.00018893769779415237,
+     "legit_revenue_lost": 1629.1,
+     "allow_rate": 1.0,
+     "hold_rate": 0.0,
+     "decline_rate": 0.0,
+     "merchant_reviews": 201,
+     "note": "every flagged order needs a human decision"
+    },
+    "rules -> auto-decline": {
+     "total_cost": 69314.83899999999,
+     "fraud_dollars": 66594.06999999999,
+     "fraud_dollars_stopped": 14420.96,
+     "fraud_dollar_stop_rate": 0.2165502123537426,
+     "fraud_count_stop_rate": 0.35058823529411764,
+     "false_decline_rate": 0.002456190071323981,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.002456190071323981,
+     "legit_revenue_lost": 30672.43,
+     "allow_rate": 0.990692720874236,
+     "hold_rate": 0.0,
+     "decline_rate": 0.009307279125764031,
+     "merchant_reviews": 0
+    },
+    "Sentinel score, binary threshold": {
+     "total_cost": 12726.219999999998,
+     "fraud_dollars": 66594.06999999999,
+     "fraud_dollars_stopped": 58029.44,
+     "fraud_dollar_stop_rate": 0.8713905006857219,
+     "fraud_count_stop_rate": 0.8870588235294118,
+     "false_decline_rate": 0.0011808606112134524,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0011808606112134524,
+     "legit_revenue_lost": 8205.3,
+     "allow_rate": 0.981385441748472,
+     "hold_rate": 0.0,
+     "decline_rate": 0.018614558251528062,
+     "merchant_reviews": 0
+    },
+    "Sentinel score, 3-way fixed thresholds": {
+     "total_cost": 12726.219999999998,
+     "fraud_dollars": 66594.06999999999,
+     "fraud_dollars_stopped": 58029.44,
+     "fraud_dollar_stop_rate": 0.8713905006857219,
+     "fraud_count_stop_rate": 0.8870588235294118,
+     "false_decline_rate": 0.0011808606112134524,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0011808606112134524,
+     "legit_revenue_lost": 8205.3,
+     "allow_rate": 0.981385441748472,
+     "hold_rate": 0.0,
+     "decline_rate": 0.018614558251528062,
+     "merchant_reviews": 0
+    },
+    "Sentinel expected-cost policy": {
+     "total_cost": 16154.971,
+     "fraud_dollars": 66594.06999999999,
+     "fraud_dollars_stopped": 52891.15,
+     "fraud_dollar_stop_rate": 0.7942321290769585,
+     "fraud_count_stop_rate": 0.8423529411764706,
+     "false_decline_rate": 0.00023617212224269049,
+     "legit_friction_rate": 0.0009446884889707619,
+     "legit_lost_rate": 0.00028340654669122857,
+     "legit_revenue_lost": 2030.17,
+     "allow_rate": 0.981385441748472,
+     "hold_rate": 0.00671420633450639,
+     "decline_rate": 0.01190035191702167,
+     "merchant_reviews": 0
+    },
+    "Sentinel expected-cost + novelty gate": {
+     "total_cost": 14491.633,
+     "fraud_dollars": 66594.06999999999,
+     "fraud_dollars_stopped": 54906.19,
+     "fraud_dollar_stop_rate": 0.8244906791250334,
+     "fraud_count_stop_rate": 0.8588235294117647,
+     "false_decline_rate": 0.00023617212224269049,
+     "legit_friction_rate": 0.007226866940626329,
+     "legit_lost_rate": 0.0008502196400736857,
+     "legit_revenue_lost": 3196.51,
+     "allow_rate": 0.9748101500277829,
+     "hold_rate": 0.013289498055195406,
+     "decline_rate": 0.01190035191702167,
+     "merchant_reviews": 0
+    },
+    "Sentinel full (cost + novelty gate + trust memory)": {
+     "total_cost": 14489.597999999998,
+     "fraud_dollars": 66594.06999999999,
+     "fraud_dollars_stopped": 54846.100000000006,
+     "fraud_dollar_stop_rate": 0.8235883465299539,
+     "fraud_count_stop_rate": 0.8564705882352941,
+     "false_decline_rate": 0.00023617212224269049,
+     "legit_friction_rate": 0.005573662084927495,
+     "legit_lost_rate": 0.0007557507911766095,
+     "legit_revenue_lost": 3020.76,
+     "allow_rate": 0.9764771253935914,
+     "hold_rate": 0.011622522689386924,
+     "decline_rate": 0.01190035191702167,
+     "merchant_reviews": 0
+    }
+   },
+   "n_test": 21596,
+   "n_test_fraud": 425,
+   "test_fraud_dollars": 66594.06999999999
+  },
+  "11": {
+   "detection": {
+    "rules engine": {
+     "auprc": 0.3697715227281333,
+     "auroc": 0.8368283545963728,
+     "recall@0.5%fpr": 0.40643863179074446,
+     "recall@1%fpr": 0.4104627766599598,
+     "dollar_recall@0.5%fpr": 0.2224329956780082,
+     "auprc_ci95": [
+      0.3333807693041245,
+      0.4142175242961022
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 0.7244444444444444,
+      "ato": 0.3,
+      "stolen_card": 0.39622641509433965,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "logistic (transaction-only)": {
+     "auprc": 0.6131020242436099,
+     "auroc": 0.9086083916553155,
+     "recall@0.5%fpr": 0.5291750503018109,
+     "recall@1%fpr": 0.5714285714285714,
+     "dollar_recall@0.5%fpr": 0.31460433615418754,
+     "auprc_ci95": [
+      0.5747732589351734,
+      0.6525830642724197
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 0.8977777777777778,
+      "ato": 0.31666666666666665,
+      "stolen_card": 0.7924528301886793,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "GBM (transaction-only)": {
+     "auprc": 0.623245798928359,
+     "auroc": 0.8333738495767363,
+     "recall@0.5%fpr": 0.6217303822937625,
+     "recall@1%fpr": 0.6438631790744467,
+     "dollar_recall@0.5%fpr": 0.416570215281687,
+     "auprc_ci95": [
+      0.5846671654882594,
+      0.6638031706471729
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 0.96,
+      "ato": 0.8,
+      "stolen_card": 0.8490566037735849,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "Sentinel (behavioural GBM bag)": {
+     "auprc": 0.8981490322645934,
+     "auroc": 0.9668449477235017,
+     "recall@0.5%fpr": 0.93158953722334,
+     "recall@1%fpr": 0.93158953722334,
+     "dollar_recall@0.5%fpr": 0.9330502964353381,
+     "auprc_ci95": [
+      0.8752479443066608,
+      0.923544601264313
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 1.0,
+      "ato": 0.9,
+      "stolen_card": 0.9811320754716981,
+      "sleeper_ring": 0.9428571428571428,
+      "friendly": 0.0
+     }
+    },
+    "Sentinel + novelty gate (flag = review or verify)": {
+     "genuine_flagged": 0.013720819437827537,
+     "recall": 0.9336016096579477,
+     "dollar_recall": 0.9336185750958085,
+     "recall_by_type": {
+      "card_testing": 1.0,
+      "ato": 0.9166666666666666,
+      "stolen_card": 0.9811320754716981,
+      "sleeper_ring": 0.9428571428571428,
+      "friendly": 0.0
+     }
+    }
+   },
+   "calibration": {
+    "brier": 0.00728060477957063,
+    "ece": 0.00520474203674761,
+    "mean_p": 0.017925522774533627,
+    "fraud_rate": 0.02313026481128124
+   },
+   "policy": {
+    "approve everything": {
+     "total_cost": 85294.18,
+     "fraud_dollars": 72869.18000000001,
+     "fraud_dollars_stopped": 0.0,
+     "fraud_dollar_stop_rate": 0.0,
+     "fraud_count_stop_rate": 0.0,
+     "false_decline_rate": 0.0,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0,
+     "legit_revenue_lost": 0.0,
+     "allow_rate": 1.0,
+     "hold_rate": 0.0,
+     "decline_rate": 0.0,
+     "merchant_reviews": 0
+    },
+    "rules -> manual review": {
+     "total_cost": 74467.568,
+     "fraud_dollars": 72869.18000000001,
+     "fraud_dollars_stopped": 9731.67,
+     "fraud_dollar_stop_rate": 0.1335498766419493,
+     "fraud_count_stop_rate": 0.1790744466800805,
+     "false_decline_rate": 0.0,
+     "legit_friction_rate": 0.0011434016198189614,
+     "legit_lost_rate": 0.00019056693663649358,
+     "legit_revenue_lost": 3462.86,
+     "allow_rate": 1.0,
+     "hold_rate": 0.0,
+     "decline_rate": 0.0,
+     "merchant_reviews": 128,
+     "note": "every flagged order needs a human decision"
+    },
+    "rules -> auto-decline": {
+     "total_cost": 78230.156,
+     "fraud_dollars": 72869.18000000001,
+     "fraud_dollars_stopped": 10911.330000000002,
+     "fraud_dollar_stop_rate": 0.14973861377334013,
+     "fraud_count_stop_rate": 0.20925553319919518,
+     "false_decline_rate": 0.0011434016198189614,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0011434016198189614,
+     "legit_revenue_lost": 19891.019999999997,
+     "allow_rate": 0.9940429096663098,
+     "hold_rate": 0.0,
+     "decline_rate": 0.005957090333690138,
+     "merchant_reviews": 0
+    },
+    "Sentinel score, binary threshold": {
+     "total_cost": 43433.994,
+     "fraud_dollars": 72869.18000000001,
+     "fraud_dollars_stopped": 34892.939999999995,
+     "fraud_dollar_stop_rate": 0.47884359340944954,
+     "fraud_count_stop_rate": 0.6861167002012073,
+     "false_decline_rate": 0.0009528346831824678,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0009528346831824678,
+     "legit_revenue_lost": 3859.18,
+     "allow_rate": 0.9831991436682646,
+     "hold_rate": 0.0,
+     "decline_rate": 0.01680085633173547,
+     "merchant_reviews": 0
+    },
+    "Sentinel score, 3-way fixed thresholds": {
+     "total_cost": 43433.994,
+     "fraud_dollars": 72869.18000000001,
+     "fraud_dollars_stopped": 34892.939999999995,
+     "fraud_dollar_stop_rate": 0.47884359340944954,
+     "fraud_count_stop_rate": 0.6861167002012073,
+     "false_decline_rate": 0.0009528346831824678,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0009528346831824678,
+     "legit_revenue_lost": 3859.18,
+     "allow_rate": 0.9831991436682646,
+     "hold_rate": 0.0,
+     "decline_rate": 0.01680085633173547,
+     "merchant_reviews": 0
+    },
+    "Sentinel expected-cost policy": {
+     "total_cost": 16120.588,
+     "fraud_dollars": 72869.18000000001,
+     "fraud_dollars_stopped": 59996.08,
+     "fraud_dollar_stop_rate": 0.8233395792295178,
+     "fraud_count_stop_rate": 0.8732394366197183,
+     "false_decline_rate": 0.0004287756074321105,
+     "legit_friction_rate": 0.00281086231538828,
+     "legit_lost_rate": 0.000857551214864221,
+     "legit_revenue_lost": 4414.96,
+     "allow_rate": 0.9753339228370643,
+     "hold_rate": 0.00907525480523107,
+     "decline_rate": 0.015590822357704658,
+     "merchant_reviews": 0
+    },
+    "Sentinel expected-cost + novelty gate": {
+     "total_cost": 17491.174,
+     "fraud_dollars": 72869.18000000001,
+     "fraud_dollars_stopped": 60037.490000000005,
+     "fraud_dollar_stop_rate": 0.8239078578899885,
+     "fraud_count_stop_rate": 0.8752515090543259,
+     "false_decline_rate": 0.0004287756074321105,
+     "legit_friction_rate": 0.012767984754645068,
+     "legit_lost_rate": 0.001810385898046689,
+     "legit_revenue_lost": 8258.28,
+     "allow_rate": 0.9655605715083538,
+     "hold_rate": 0.018848606133941452,
+     "decline_rate": 0.015590822357704658,
+     "merchant_reviews": 0
+    },
+    "Sentinel full (cost + novelty gate + trust memory)": {
+     "total_cost": 17350.125,
+     "fraud_dollars": 72869.18000000001,
+     "fraud_dollars_stopped": 59996.08,
+     "fraud_dollar_stop_rate": 0.8233395792295178,
+     "fraud_count_stop_rate": 0.8732394366197183,
+     "false_decline_rate": 0.0004287756074321105,
+     "legit_friction_rate": 0.011338732729871367,
+     "legit_lost_rate": 0.001715102429728442,
+     "legit_revenue_lost": 7674.750000000001,
+     "allow_rate": 0.9670033043235444,
+     "hold_rate": 0.01740587331875087,
+     "decline_rate": 0.015590822357704658,
+     "merchant_reviews": 0
+    }
+   },
+   "n_test": 21487,
+   "n_test_fraud": 497,
+   "test_fraud_dollars": 72869.18000000001
+  },
+  "23": {
+   "detection": {
+    "rules engine": {
+     "auprc": 0.30631067834779846,
+     "auroc": 0.8461809545231429,
+     "recall@0.5%fpr": 0.31336405529953915,
+     "recall@1%fpr": 0.31336405529953915,
+     "dollar_recall@0.5%fpr": 0.2738331603174987,
+     "auprc_ci95": [
+      0.26748158181385984,
+      0.3506220912181202
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 0.5722222222222222,
+      "ato": 0.375,
+      "stolen_card": 0.35,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "logistic (transaction-only)": {
+     "auprc": 0.5807066773994459,
+     "auroc": 0.8981077071211951,
+     "recall@0.5%fpr": 0.511520737327189,
+     "recall@1%fpr": 0.5483870967741935,
+     "dollar_recall@0.5%fpr": 0.2962862261067698,
+     "auprc_ci95": [
+      0.5394710183108399,
+      0.6197804777841106
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 0.9666666666666667,
+      "ato": 0.15625,
+      "stolen_card": 0.7166666666666667,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "GBM (transaction-only)": {
+     "auprc": 0.5612732791694168,
+     "auroc": 0.8544303453838935,
+     "recall@0.5%fpr": 0.5645161290322581,
+     "recall@1%fpr": 0.5921658986175116,
+     "dollar_recall@0.5%fpr": 0.40589982163240446,
+     "auprc_ci95": [
+      0.5153417920162858,
+      0.6020905558855398
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 0.9611111111111111,
+      "ato": 0.65625,
+      "stolen_card": 0.85,
+      "sleeper_ring": 0.0,
+      "friendly": 0.0
+     }
+    },
+    "Sentinel (behavioural GBM bag)": {
+     "auprc": 0.9107449220751225,
+     "auroc": 0.9741349890249672,
+     "recall@0.5%fpr": 0.9170506912442397,
+     "recall@1%fpr": 0.9170506912442397,
+     "dollar_recall@0.5%fpr": 0.9184057598877451,
+     "auprc_ci95": [
+      0.8816789247100824,
+      0.9394541289708764
+     ],
+     "recall_by_type@0.5%fpr": {
+      "card_testing": 1.0,
+      "ato": 0.9375,
+      "stolen_card": 0.9,
+      "sleeper_ring": 0.9571428571428572,
+      "friendly": 0.0
+     }
+    },
+    "Sentinel + novelty gate (flag = review or verify)": {
+     "genuine_flagged": 0.010819908631882664,
+     "recall": 0.9170506912442397,
+     "dollar_recall": 0.9184057598877452,
+     "recall_by_type": {
+      "card_testing": 1.0,
+      "ato": 0.9375,
+      "stolen_card": 0.9,
+      "sleeper_ring": 0.9571428571428572,
+      "friendly": 0.0
+     }
+    }
+   },
+   "calibration": {
+    "brier": 0.004220480643914703,
+    "ece": 0.0034468117373693515,
+    "mean_p": 0.017391496838216905,
+    "fraud_rate": 0.02044373262989307
+   },
+   "policy": {
+    "approve everything": {
+     "total_cost": 83598.63999999998,
+     "fraud_dollars": 72748.63999999998,
+     "fraud_dollars_stopped": 0.0,
+     "fraud_dollar_stop_rate": 0.0,
+     "fraud_count_stop_rate": 0.0,
+     "false_decline_rate": 0.0,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0,
+     "legit_revenue_lost": 0.0,
+     "allow_rate": 1.0,
+     "hold_rate": 0.0,
+     "decline_rate": 0.0,
+     "merchant_reviews": 0
+    },
+    "rules -> manual review": {
+     "total_cost": 67554.103,
+     "fraud_dollars": 72748.63999999998,
+     "fraud_dollars_stopped": 14401.89,
+     "fraud_dollar_stop_rate": 0.19796782455314632,
+     "fraud_count_stop_rate": 0.20046082949308755,
+     "false_decline_rate": 0.0,
+     "legit_friction_rate": 0.002548689588843472,
+     "legit_lost_rate": 0.00019235393123346957,
+     "legit_revenue_lost": 1430.51,
+     "allow_rate": 1.0,
+     "hold_rate": 0.0,
+     "decline_rate": 0.0,
+     "merchant_reviews": 158,
+     "note": "every flagged order needs a human decision"
+    },
+    "rules -> auto-decline": {
+     "total_cost": 72651.94,
+     "fraud_dollars": 72748.63999999998,
+     "fraud_dollars_stopped": 17914.539999999997,
+     "fraud_dollar_stop_rate": 0.2462525759931732,
+     "fraud_count_stop_rate": 0.24193548387096775,
+     "false_decline_rate": 0.002548689588843472,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.002548689588843472,
+     "legit_revenue_lost": 28442.8,
+     "allow_rate": 0.9925573507937255,
+     "hold_rate": 0.0,
+     "decline_rate": 0.007442649206274436,
+     "merchant_reviews": 0
+    },
+    "Sentinel score, binary threshold": {
+     "total_cost": 9797.872,
+     "fraud_dollars": 72748.63999999998,
+     "fraud_dollars_stopped": 66812.77,
+     "fraud_dollar_stop_rate": 0.9184057598877452,
+     "fraud_count_stop_rate": 0.9170506912442397,
+     "false_decline_rate": 0.0023082471748016352,
+     "legit_friction_rate": 0.0,
+     "legit_lost_rate": 0.0023082471748016352,
+     "legit_revenue_lost": 6673.34,
+     "allow_rate": 0.9789910028734279,
+     "hold_rate": 0.0,
+     "decline_rate": 0.021008997126572143,
+     "merchant_reviews": 0
+    },
+    "Sentinel score, 3-way fixed thresholds": {
+     "total_cost": 15395.213,
+     "fraud_dollars": 72748.63999999998,
+     "fraud_dollars_stopped": 59554.92,
+     "fraud_dollar_stop_rate": 0.8186396336756262,
+     "fraud_count_stop_rate": 0.8179723502304147,
+     "false_decline_rate": 4.8088482808367394e-05,
+     "legit_friction_rate": 0.0022601586919932678,
+     "legit_lost_rate": 9.617696561673479e-05,
+     "legit_revenue_lost": 172.31,
+     "allow_rate": 0.9789910028734279,
+     "hold_rate": 0.017052145649818645,
+     "decline_rate": 0.003956851476753498,
+     "merchant_reviews": 0
+    },
+    "Sentinel expected-cost policy": {
+     "total_cost": 12745.974999999999,
+     "fraud_dollars": 72748.63999999998,
+     "fraud_dollars_stopped": 61434.78,
+     "fraud_dollar_stop_rate": 0.8444801167417014,
+     "fraud_count_stop_rate": 0.8824884792626728,
+     "false_decline_rate": 9.617696561673479e-05,
+     "legit_friction_rate": 0.0022120702091849003,
+     "legit_lost_rate": 0.0001442654484251022,
+     "legit_revenue_lost": 189.05,
+     "allow_rate": 0.9789910028734279,
+     "hold_rate": 0.005935277215130246,
+     "decline_rate": 0.015073719911441895,
+     "merchant_reviews": 0
+    },
+    "Sentinel expected-cost + novelty gate": {
+     "total_cost": 13639.66,
+     "fraud_dollars": 72748.63999999998,
+     "fraud_dollars_stopped": 61434.78,
+     "fraud_dollar_stop_rate": 0.8444801167417014,
+     "fraud_count_stop_rate": 0.8824884792626728,
+     "false_decline_rate": 9.617696561673479e-05,
+     "legit_friction_rate": 0.01072373166626593,
+     "legit_lost_rate": 0.0008655926905506131,
+     "legit_revenue_lost": 2432.0,
+     "allow_rate": 0.9706533515474116,
+     "hold_rate": 0.014272928541146545,
+     "decline_rate": 0.015073719911441895,
+     "merchant_reviews": 0
+    },
+    "Sentinel full (cost + novelty gate + trust memory)": {
+     "total_cost": 13452.333999999999,
+     "fraud_dollars": 72748.63999999998,
+     "fraud_dollars_stopped": 61434.78,
+     "fraud_dollar_stop_rate": 0.8444801167417014,
+     "fraud_count_stop_rate": 0.8824884792626728,
+     "false_decline_rate": 9.617696561673479e-05,
+     "legit_friction_rate": 0.008367396008655928,
+     "legit_lost_rate": 0.0006251502765087762,
+     "legit_revenue_lost": 2039.5800000000002,
+     "allow_rate": 0.9729615149088511,
+     "hold_rate": 0.011964765179707005,
+     "decline_rate": 0.015073719911441895,
+     "merchant_reviews": 0
+    }
+   },
+   "n_test": 21229,
+   "n_test_fraud": 434,
+   "test_fraud_dollars": 72748.63999999998
+  }
+ }
+}
