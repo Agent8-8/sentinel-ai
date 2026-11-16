@@ -167,7 +167,7 @@
   <section class="section" id="how" aria-labelledby="how-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="how-h">How Sentinel decides in 3 steps. <span class="muted">About 14 ms an order.</span></h2>
+        <h2 id="how-h">How Sentinel decides in 3 steps.</h2>
       </div>
       <div class="grid">
         <article class="card card--row span-4">
@@ -183,11 +183,11 @@
           <h3>Prices all three actions</h3>
           <p>Fraud loss if allowed, lost margin if declined, friction if verified. The cheapest wins.</p>
           <div class="panel panel--flush">
-            <div class="mini-cost" role="img" aria-label="For a $412 order at 34% risk: allow costs $148.60, verify $2.71, decline $180.06">
+            <div class="mini-cost" role="img" aria-label="For a $412 order at 34% risk: allow costs $148.58, verify $28.86, decline $94.78">
               <p class="mini-cost__head"><b>$412.00</b><span>risk 34%</span></p>
-              <div class="mini-cost__row"><span>Allow</span><i style="--w:83%"></i><b>$148.60</b></div>
-              <div class="mini-cost__row is-pick"><span>Verify</span><i style="--w:2%"></i><b>$2.71</b></div>
-              <div class="mini-cost__row"><span>Decline</span><i style="--w:100%"></i><b>$180.06</b></div>
+              <div class="mini-cost__row"><span>Allow</span><i style="--w:100%"></i><b>$148.58</b></div>
+              <div class="mini-cost__row is-pick"><span>Verify</span><i style="--w:19.4%"></i><b>$28.86</b></div>
+              <div class="mini-cost__row"><span>Decline</span><i style="--w:63.8%"></i><b>$94.78</b></div>
             </div>
           </div>
         </article>
@@ -289,7 +289,7 @@
         </div>
         </div>
         <div class="span-6 ev-col">
-        <h3 class="ev-h">Cost of each decision policy. <span class="muted">Test window, mean per store.</span></h3>
+        <h3 class="ev-h">Cost of each decision policy. <span class="muted">Test window, mean per store. These earlier runs still charge a chargeback on blocked fraud, so they differ from the corrected $14,776 replay.</span></h3>
         <ul class="ev-costs" role="img" aria-label="Simulated total cost by decision policy: allow every order $82,037; rules auto-decline $73,399; rules manual review $67,959; Sentinel one threshold $21,986; Sentinel expected-cost policy $15,007">
           <li><span>Allow every order</span><i style="--v:100%"></i><b>$82,037</b></li>
           <li><span>Rules engine, auto-decline</span><i style="--v:89.5%"></i><b>$73,399</b></li>
@@ -315,7 +315,7 @@
         <div class="span-5 stack-4">
           <h2 id="limits-h">Questions and known limits</h2>
           <p class="lede">One script installs the project, runs its leakage and policy tests, then starts the dashboard.</p>
-          <a class="link" href="https://github.com/Agent8-8/sentinel-ai#honest-limitations">Read the full limitations</a>
+          <a class="link" href="https://github.com/Agent8-8/sentinel-ai#where-it-fails">Read the full limitations</a>
           <div class="term-slot" role="img" aria-label="Terminal running run.sh: seven leakage and policy tests pass, then the dashboard starts on port 8000">
             <div class="ui ui-panel ui-term" data-ui="terminal-run">
               <div class="ui-term__head">

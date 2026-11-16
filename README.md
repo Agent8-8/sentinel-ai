@@ -34,7 +34,7 @@ All the AI code is in the [`sentinel/`](sentinel/) folder. It uses [scikit-learn
 | 4. Handle late labels | Recent orders with no chargeback yet might still be fraud, so they count less in training | [`models.py` → `maturity_weights()`](sentinel/models.py#L106) |
 | 5. Train the model | **The main AI:** 5 gradient-boosted tree models (`HistGradientBoostingClassifier`), each with a different random seed, averaged together | [`models.py` → `hgb()`](sentinel/models.py#L91), [`pipeline.py` → `SentinelModel.fit()`](sentinel/pipeline.py#L28) |
 | 6. Calibrate | Adjusts the score so "0.30" really means about a 30% chance of fraud (isotonic regression, fit on validation data) | [`models.py` → `Calibrator`](sentinel/models.py#L130), [`pipeline.py` → `calibrate()`](sentinel/pipeline.py#L53) |
-| 7. Anomaly check | An `IsolationForest` trained only on normal orders flags very unusual ones for verification (never for decline) | [`pipeline.py`](sentinel/pipeline.py#L28) |
+| 7. Anomaly check | An `IsolationForest` trained only on orders with no chargeback on record flags very unusual ones for verification (never for decline) | [`pipeline.py`](sentinel/pipeline.py#L28) |
 | 8. Pick an action | For each order, works out the expected cost of allow, verify, and decline, and picks the cheapest | [`policy.py` → `expected_costs()` and `decide()`](sentinel/policy.py#L43) |
 | 9. Explain | Shows which signals raised the risk the most by setting each one back to normal and seeing how much the score drops | [`explain.py` → `reason_codes()`](sentinel/explain.py#L38) |
 | 10. Test | Trains on 3 separate simulated stores and scores the untouched test days | [`evaluate.py` → `run_world()`](sentinel/evaluate.py#L63) |
@@ -92,5 +92,6 @@ sentinel/check_metrics.py   precision, recall and a missed-fraud example
 sentinel/audit_groups.py    false flags by customer situation -> reports/scenario_audit.json
 sentinel/benchmark_public.py  real-data check -> reports/public_benchmark.json
 sentinel/api.py, dashboard/ live demo dashboard
+website/                    static showcase site (live: https://sentinel-ai-site-gamma.vercel.app)
 tests/                      checks for data leakage and policy logic
 ```
